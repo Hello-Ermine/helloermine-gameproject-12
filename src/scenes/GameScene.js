@@ -1,10 +1,8 @@
 import Phaser from "phaser";
-import { NONE } from "phaser/src/const";
 
-let mainbg, player;
+let mainbg, player, enemy1;
 let keyA, keyD, keyVis;
-let music,soundVis;
-let enemy1;
+let music, soundVis;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -16,9 +14,9 @@ class GameScene extends Phaser.Scene {
     preload() {
         this.load.image('mainbg', 'src/image/BackG.jpg');
         this.load.spritesheet('player', 'src/image/player1.png', { frameWidth: 180, frameHeight: 247 });
-        this.load.spritesheet('enemy1', 'src/image/enemy1.png', { frameWidth: 170, frameHeight: 173 });
         this.load.audio('song','src/image/song/gamesong.mp3');
         this.load.audio('soundVis','src/image/song/visiblesound.mp3');
+        this.load.spritesheet('enemy1', 'src/image/enemy1.png', { frameWidth: 170, frameHeight: 173 });
     }
 
     create() {
@@ -29,10 +27,10 @@ class GameScene extends Phaser.Scene {
 
         //Player
         player = this.physics.add.sprite(400, 600, 'player')
-            .setDepth(10)
             .setScale(0.8)
             .setSize(80, -180)
             .setOffset(60, 220);
+        
         //Aims set
         this.anims.create({
             key: 'playerrun',
@@ -47,10 +45,9 @@ class GameScene extends Phaser.Scene {
 
         //Enemy01
         enemy1 = this.physics.add.sprite(1200, 600, 'enemy1')
-            .setDepth(10)
             .setScale(0.75);
         
-        //Aims set
+        //Enemy set
         this.anims.create({
             key: 'enemy1anim',
             frames: this.anims.generateFrameNumbers('enemy1', {
@@ -69,7 +66,11 @@ class GameScene extends Phaser.Scene {
 
         //wallblock
         player.setCollideWorldBounds(true);
-        this.physics.add.overlap(player, enemy1, ()=>console.log('test'));
+        this.physics.add.collider(player, enemy1,  ()=>{
+            music.stop();
+            music.stop();
+            this.scene.start('MainMenu');
+            });
 
         //music
         music = this.sound.add('song')
