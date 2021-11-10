@@ -36,26 +36,24 @@ class GameScene extends Phaser.Scene {
             .tileSprite(0, -20, 1280, 720, "mainbg")
             .setDepth(0)
             .setScale(2.2);
+
         //block ช่วยให้ตัวละครไม่เดินขึ้นไปมากกว่านี้
         block = this.physics.add
-            .image(640, 100, "block")
+            .image(150, 130, "block")
             .setDepth(10)
             .setVisible(0)
             .setImmovable()
-            .setSize(1280, 50);
-        block = this.physics.add
-            .image(640, 500, "block")
-            .setDepth(10)
-            .setVisible(0)
-            .setSize(1280, 50);
+            .setSize(1280, 0)
+            .setOffset(0, 0);
 
         //Player
         player = this.physics.add
             .sprite(400, 600, "player")
             .setDepth(10)
-            .setScale(0.8)
-            .setSize(80, -180)
-            .setOffset(60, 220);
+            .setScale(0.7)
+            .setSize(100, 100)
+            .setOffset(50, 100);
+        //.setGravityY(6000);
 
         //Aims set
         this.anims.create({
@@ -84,8 +82,10 @@ class GameScene extends Phaser.Scene {
         //Enemy01
         enemy1 = this.physics.add
             .sprite(1200, 600, "enemy1")
-            .setScale(0.75)
-            .setImmovable();
+            .setDepth(10)
+            .setScale(0.7)
+            .setSize(100, 100)
+            .setOffset(50, 100);
 
         //Enemy set
         this.anims.create({
@@ -104,16 +104,15 @@ class GameScene extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keyVis = this.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.SPACE
-        );
+        keyVis = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //wallblock
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, enemy1);
+
         //music
-        music = this.sound.add("song").setVolume(0).play({ loop: true });
+        music = this.sound.add("song").setVolume(0.1).play({ loop: true });
         soundVis = this.sound.add("soundVis").setVolume(0.5);
     }
 
@@ -123,8 +122,9 @@ class GameScene extends Phaser.Scene {
         //Enemy1 Anims
         enemy1.anims.play("enemy1anim", true);
         enemy1.setVelocityX(0);
-
-        //Key ADWS STOP
+        enemy1.flipX = true;
+        
+        //Key WS STOP
         if (keyS.isDown) {
             player.setVelocityY(200);
         } else if (keyW.isDown) {
@@ -132,23 +132,28 @@ class GameScene extends Phaser.Scene {
         } else {
             player.setVelocityY(0);
         }
+
+        //Key AD STOP
         if (keyA.isDown) {
-            player.setVelocityX(-100);
+            player.setVelocityX(-200);
             mainbg.tilePositionX -= 2;
-            player.anims.play("playerrun", true);
             player.flipX = true;
         } else if (keyD.isDown) {
             player.setVelocityX(200);
             mainbg.tilePositionX += 2;
-            player.anims.play("playerrun", true);
             player.flipX = false;
         } else {
             player.setVelocityX(0);
-            player.anims.play("playerrun", false);
+            player.anims.play("playerrun", true);
         }
+
+        //KeySpace
         if (keyVis.isDown) {
             player.anims.play("smokeVis", true);
-        }else if (keyVis.isUp) {
+            player.setVelocityX(-100);
+        } else if (keyVis.isUp) {
+            player.anims.play("playerrun", true);
+            //mainbg.tilePositionX += 4;
             soundVis.play();
         }
     }
