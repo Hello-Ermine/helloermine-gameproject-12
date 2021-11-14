@@ -27,6 +27,9 @@ class GameScene02 extends Phaser.Scene {
     }
 
     create() {
+        //music
+        music = this.sound.add("song").setVolume(0.1);
+        music.play({ loop: true });
         //BackGround
         bgRun01 = this.add
             .tileSprite(0, 0, 1280, 720, "bgRun01")
@@ -49,7 +52,7 @@ class GameScene02 extends Phaser.Scene {
 
         //Player
         player = this.physics.add
-            .sprite(400, 600, "player")
+            .sprite(100, 450, "player")
             .setDepth(10)
             .setScale(0.7)
             .setSize(100, 100)
@@ -114,7 +117,7 @@ class GameScene02 extends Phaser.Scene {
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
             music.stop();
-            this.scene.start('GameScene02')
+            this.scene.start('GameScene03')
         });
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
@@ -130,9 +133,6 @@ class GameScene02 extends Phaser.Scene {
 
 
 
-
-        //music
-        music = this.sound.add("song").setVolume(0.1).play({ loop: true });
     }
 
     update(delta, time) {

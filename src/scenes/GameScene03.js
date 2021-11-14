@@ -1,15 +1,15 @@
 import Phaser from "phaser";
 
-let mainbg, block, block2, player, enemy1, FruitGroup,
+let bgRun01, block, block2, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 let home;
 
-class GameScene extends Phaser.Scene {
+class GameScene03 extends Phaser.Scene {
     constructor(test) {
         super({
-            key: "GameScene",
+            key: "GameScene03",
         });
     }
 
@@ -31,16 +31,10 @@ class GameScene extends Phaser.Scene {
         music = this.sound.add("song").setVolume(0.1);
         music.play({ loop: true });
         //BackGround
-        mainbg = this.add
-            .tileSprite(0, 0, 1280, 720, "mainbg")
+        bgRun01 = this.add
+            .tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
             .setOrigin(0);
-        home = this.physics.add
-            .image(0, 0, "home")
-            .setDepth(0)
-            .setOrigin(0)
-            .setImmovable()
-            .setOffset(-350, 500);
         block = this.physics.add
             .image(355, -20, "block")
             .setDepth(100)
@@ -58,18 +52,18 @@ class GameScene extends Phaser.Scene {
 
         //Player
         player = this.physics.add
-            .sprite(400, 600, "player")
+            .sprite(100, 450, "player")
             .setDepth(10)
             .setScale(0.7)
             .setSize(100, 100)
             .setOffset(50, 100);
         this.anims.create({
-            key: "playerrun",
+            key: "playerrunLv2",
             frames: this.anims.generateFrameNumbers("player", {
                 start: 0,
                 end: 9,
             }),
-            duration: 700,
+            duration: 200,
             framerate: 0,
             repeat: -1,
         });
@@ -81,7 +75,7 @@ class GameScene extends Phaser.Scene {
                 start: 0,
                 end: 3,
             }),
-            duration: 500,
+            duration: 350,
             framerate: 0,
             repeat: -1,
         });
@@ -122,8 +116,8 @@ class GameScene extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            this.scene.start('GameScene02');
             music.stop();
+            this.scene.start('GameScene02')
         });
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
@@ -143,8 +137,8 @@ class GameScene extends Phaser.Scene {
     }
 
     update(delta, time) {
-        mainbg.tilePositionX += 0;
-        player.anims.play("playerrun", true);
+        bgRun01.tilePositionX += 7;
+        player.anims.play("playerrunLv2", true);
 
         //Key WS STOP
         if (keyS.isDown) {player.setVelocityY(300);} 
@@ -152,7 +146,7 @@ class GameScene extends Phaser.Scene {
         else {player.setVelocityY(0);}
         //Key AD STOP
         if (keyA.isDown) {player.setVelocityX(-300);}
-        else if (keyD.isDown) {player.setVelocityX(1000);}
+        else if (keyD.isDown) {player.setVelocityX(300);}
         else {player.setVelocityX(0);}
         
         //KeyQ
@@ -165,4 +159,4 @@ class GameScene extends Phaser.Scene {
         }
     }
 }
-export default GameScene;
+export default GameScene03;
