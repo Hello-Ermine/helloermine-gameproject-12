@@ -37,7 +37,7 @@ class GameScene extends Phaser.Scene {
             .setOrigin(0);
         home = this.physics.add
             .image(0, 0, "home")
-            .setDepth(0)
+            .setDepth(9)
             .setOrigin(0)
             .setImmovable()
             .setOffset(-350, 500);
