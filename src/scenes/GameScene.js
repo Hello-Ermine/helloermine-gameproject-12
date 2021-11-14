@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 
-let mainbg, block, player, enemy1, FruitGroup,
+let mainbg, block, block2, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 let home;
+
 class GameScene extends Phaser.Scene {
     constructor(test) {
         super({
@@ -38,12 +39,19 @@ class GameScene extends Phaser.Scene {
             .setImmovable()
             .setOffset(-350, 500);
         block = this.physics.add
-            .image(355, 20, "block")
+            .image(355, -20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(1280, 0)
             .setOffset(0, 0);
+        block2 = this.physics.add
+            .image(355, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
 
         //Player
         player = this.physics.add
@@ -87,11 +95,8 @@ class GameScene extends Phaser.Scene {
                     .setScale(0.7)
                     .setSize(100, 160)
                     .setOffset(50, 10);
-
                 monsterGroup.add(monster)
                     .setVelocityX(-600);
-
-
                 monster.anims.play("monsterOrangeanim", true);
                 monster.flipX = true;
             },
@@ -113,6 +118,9 @@ class GameScene extends Phaser.Scene {
         //wallblock
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
+        this.physics.add.collider(player, block2, (player, block2) => {
+            this.scene.start('GameScene')
+        });
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
         //Vs monster
@@ -134,33 +142,23 @@ class GameScene extends Phaser.Scene {
 
     update(delta, time) {
         mainbg.tilePositionX += 0;
+        player.anims.play("playerrun", true);
 
         //Key WS STOP
-        if (keyS.isDown) {
-            player.setVelocityY(300);
-        } else if (keyW.isDown) {
-            player.setVelocityY(-300);
-        } else {
-            player.setVelocityY(0);
-        }
-
+        if (keyS.isDown) {player.setVelocityY(300);} 
+        else if (keyW.isDown) {player.setVelocityY(-300);}
+        else {player.setVelocityY(0);}
         //Key AD STOP
-        if (keyA.isDown) {
-            player.setVelocityX(-300);
-        } else if (keyD.isDown) {
-            player.setVelocityX(300);
-        } else {
-            player.setVelocityX(0);
-            player.anims.play("playerrun", true);
-        }
-
+        if (keyA.isDown) {player.setVelocityX(-300);}
+        else if (keyD.isDown) {player.setVelocityX(300);}
+        else {player.setVelocityX(0);}
+        
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
-
             fruit = this.physics.add.image(player.x, player.y, 'fruit')
-                .setScale(0.1);
+                .setScale(0.1)
             // fruit.rotation += 1;
-            FruitGroup.add(fruit);
+            FruitGroup.add(fruit)
             FruitGroup.setVelocityX(800)
         }
     }
