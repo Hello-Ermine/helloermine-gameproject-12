@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 
 let mainbg, block, player, enemy1, FruitGroup,
-    FruitEvent, fruit, demon, demonGroup, demonSpawn;
-let keyA, keyD, keyW, keyS, keyVis, keyQ;
-let music, soundVis;
-
+    FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
+let keyA, keyD, keyW, keyS, keyQ;
+let music;
+let home;
 class GameScene extends Phaser.Scene {
     constructor(test) {
         super({
@@ -13,44 +13,33 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("mainbg", "src/image/BG.jpg");
+        this.load.image("mainbg", "src/image/bgnight01.png");
+        this.load.image("bgRun01", "src/image/bgnight02.png");
+        this.load.image("home", "src/image/home.png");
+
         this.load.image("block", "src/image/block2.png");
 
         this.load.image("fruit", "src/image/ninja-fruit.png");
-
-        this.load.spritesheet("player", "src/image/ninja.png", {
-            frameWidth: 229.2,
-            frameHeight: 280,
-        });
-        this.load.spritesheet("smoke", "src/image/smoke.png", {
-            frameWidth: 125.25,
-            frameHeight: 100,
-        });
+        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
         this.load.audio("song", "src/image/song/gamesong.mp3");
-        this.load.audio("soundVis", "src/image/song/visiblesoundDis.mp3");
-
-        this.load.spritesheet("demon", "src/image/demon.png", {
-            frameWidth: 178.75,
-            frameHeight: 185,
-        });
-
-        this.load.spritesheet("enemy1", "src/image/player1.png", {
-            frameWidth: 180,
-            frameHeight: 247,
-        });
+        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
     }
 
     create() {
-        //BackG
+        //BackGround
         mainbg = this.add
-            .tileSprite(0, -20, 1280, 720, "mainbg")
+            .tileSprite(0, 0, 1280, 720, "mainbg")
             .setDepth(0)
-            .setScale(2.2);
-
-        //block ช่วยให้ตัวละครไม่เดินขึ้นไปมากกว่านี้
+            .setOrigin(0);
+        home = this.physics.add
+            .image(0, 0, "home")
+            .setDepth(0)
+            .setOrigin(0)
+            .setImmovable()
+            .setOffset(-350, 500);
         block = this.physics.add
-            .image(150, 130, "block")
-            .setDepth(10)
+            .image(355, 20, "block")
+            .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(1280, 0)
@@ -63,48 +52,21 @@ class GameScene extends Phaser.Scene {
             .setScale(0.7)
             .setSize(100, 100)
             .setOffset(50, 100);
-        //.setGravityY(6000);
-
-        //Aims set
         this.anims.create({
             key: "playerrun",
             frames: this.anims.generateFrameNumbers("player", {
                 start: 0,
-                end: 4,
+                end: 9,
             }),
-            duration: 450,
+            duration: 700,
             framerate: 0,
             repeat: -1,
         });
-
-        //smoke set
-        this.anims.create({
-            key: "smokeVis",
-            frames: this.anims.generateFrameNumbers("smoke", {
-                start: 0,
-                end: 7,
-            }),
-            duration: 300,
-            framerate: 0,
-            repeat: -1,
-        });
-
-        //Enemy01
-
-        // demon = this.physics.add
-        //     .sprite(Phaser.Math.Between(600,1100),
-        //             600,'demon')
-        //     // (1200, 600, "demon")
-        //     .setDepth(10)
-        //     .setScale(0.7)
-        //     .setSize(100, 100)
-        //     .setOffset(50, 100)
-        //     .setVelocityX(-100);
 
         //Enemy set
         this.anims.create({
-            key: "demonanim",
-            frames: this.anims.generateFrameNumbers("demon", {
+            key: "monsterOrangeanim",
+            frames: this.anims.generateFrameNumbers("monsterOrange", {
                 start: 0,
                 end: 3,
             }),
@@ -113,118 +75,83 @@ class GameScene extends Phaser.Scene {
             repeat: -1,
         });
 
-        demonGroup = this.physics.add.group();
+        monsterGroup = this.physics.add.group();
 
-        demonSpawn = this.time.addEvent({
+        monsterSpawn = this.time.addEvent({
             delay: 3000,
             callback: function () {
-                demon = this.physics.add
+                monster = this.physics.add
                     .sprite(Phaser.Math.Between(900, 1100),
-                        Phaser.Math.Between(400, 600), 'demon')
-                    .setDepth(10)
+                        Phaser.Math.Between(400, 600), 'monsterOrange')
+                    .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
                     .setOffset(50, 10);
 
-                demonGroup.add(demon)
-                    .setVelocityX(-100);
+                monsterGroup.add(monster)
+                    .setVelocityX(-600);
 
 
-                demon.anims.play("demonanim", true);
-                demon.flipX = true;
+                monster.anims.play("monsterOrangeanim", true);
+                monster.flipX = true;
             },
             callbackScope: this,
             loop: true,
             pause: false
         });
 
-
         //Fruit set
         FruitGroup = this.physics.add.group();
-
-        // FruitEvent = this.time.addEvent({
-        //     delay: 1000,
-        //     callback: function () {
-        //         fruits = this.physics.add.image(fruit.x, fruit.y, 'fruit')
-        //             .setScale(0.2);
-
-        //         FruitGroup.add(fruits);
-
-        //         FruitGroup.setValocityX(-200);
-        //     },
-        //     callbackScope: this,
-        //     loop: true,
-        //     pause: false
-        // });
 
         //KEY
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keyVis = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
-        keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        keyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //wallblock
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
+        this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
-
-        this.physics.add.collider(player, demonGroup, (player, demon) => {
-            demon.destroy();
-
+        //Vs monster
+        this.physics.add.collider(player, monsterGroup, (player, monster) => {
+            monster.destroy();
         });
-
-        this.physics.add.collider(FruitGroup, demonGroup, (fruit, demon) => {
+        this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
             fruit.destroy();
-            demon.destroy();
+            monster.destroy();
         });
+
+
+
 
 
         //music
         music = this.sound.add("song").setVolume(0.1).play({ loop: true });
-        soundVis = this.sound.add("soundVis").setVolume(0.5);
     }
 
     update(delta, time) {
         mainbg.tilePositionX += 0;
 
-        //Enemy1 Anims
-        // demon.anims.play("demonanim", true);
-        // demon.flipX = true;
-
         //Key WS STOP
         if (keyS.isDown) {
-            player.setVelocityY(200);
+            player.setVelocityY(300);
         } else if (keyW.isDown) {
-            player.setVelocityY(-200);
+            player.setVelocityY(-300);
         } else {
             player.setVelocityY(0);
         }
 
         //Key AD STOP
         if (keyA.isDown) {
-            player.setVelocityX(-200);
-            mainbg.tilePositionX -= 2;
-            player.flipX = true;
+            player.setVelocityX(-300);
         } else if (keyD.isDown) {
-            player.setVelocityX(200);
-            mainbg.tilePositionX += 2;
-            player.flipX = false;
+            player.setVelocityX(300);
         } else {
             player.setVelocityX(0);
             player.anims.play("playerrun", true);
-        }
-
-        //KeySpace
-        if (keyVis.isDown) {
-            player.anims.play("smokeVis", true);
-            player.setVelocityX(-50);
-        } else if (keyVis.isUp) {
-            player.anims.play("playerrun", true);
-            //mainbg.tilePositionX += 4;
-            soundVis.play();
         }
 
         //KeyQ
@@ -234,14 +161,8 @@ class GameScene extends Phaser.Scene {
                 .setScale(0.1);
             // fruit.rotation += 1;
             FruitGroup.add(fruit);
-            FruitGroup.setVelocityX(200)
+            FruitGroup.setVelocityX(800)
         }
-
-        // this.physics.add.collider(fruit, demon, (fruit, demon)=> {
-
-        //     fruit.destroy();
-        //     demon.destroy();
-        //     });
     }
 }
 export default GameScene;
