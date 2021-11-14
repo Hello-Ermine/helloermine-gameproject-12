@@ -1,15 +1,15 @@
 import Phaser from "phaser";
 
-let mainbg, block, block2, player, enemy1, FruitGroup,
+let bgRun01, block, block2, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 let home;
 
-class GameScene extends Phaser.Scene {
+class GameScene02 extends Phaser.Scene {
     constructor(test) {
         super({
-            key: "GameScene",
+            key: "GameScene02",
         });
     }
 
@@ -28,16 +28,10 @@ class GameScene extends Phaser.Scene {
 
     create() {
         //BackGround
-        mainbg = this.add
-            .tileSprite(0, 0, 1280, 720, "mainbg")
+        bgRun01 = this.add
+            .tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
             .setOrigin(0);
-        home = this.physics.add
-            .image(0, 0, "home")
-            .setDepth(0)
-            .setOrigin(0)
-            .setImmovable()
-            .setOffset(-350, 500);
         block = this.physics.add
             .image(355, -20, "block")
             .setDepth(100)
@@ -119,6 +113,7 @@ class GameScene extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
+            music.stop();
             this.scene.start('GameScene02')
         });
         this.physics.add.collider(player, home);
@@ -141,7 +136,7 @@ class GameScene extends Phaser.Scene {
     }
 
     update(delta, time) {
-        mainbg.tilePositionX += 0;
+        bgRun01.tilePositionX += 2;
         player.anims.play("playerrun", true);
 
         //Key WS STOP
@@ -163,4 +158,4 @@ class GameScene extends Phaser.Scene {
         }
     }
 }
-export default GameScene;
+export default GameScene02;
