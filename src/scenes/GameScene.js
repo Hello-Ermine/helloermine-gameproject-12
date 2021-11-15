@@ -24,7 +24,7 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
         this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย.png", {frameWidth: 196,frameHeight: 201});
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", {frameWidth: 205,frameHeight: 201});
     }
 
     create() {
@@ -86,6 +86,7 @@ class GameScene extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+
         this.anims.create({
             key: "monsterOrangeDieanim",
             frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
@@ -110,7 +111,9 @@ class GameScene extends Phaser.Scene {
                     .setOffset(50, 10);
                 monsterGroup.add(monster)
                     .setVelocityX(-600);
-                monster.anims.play("monsterOrangeanim", true);
+                monster.anims.play("monsterOrangeanim", true)
+                .setSize(100, 160)
+                .setOffset(50, 10);
                 monster.flipX = true;
             },
             callbackScope: this,
@@ -141,13 +144,14 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
         });
+
         this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
             monster.setVelocityX(0);
             fruit.destroy();
-            // delay: 5000;
             // monster.destroy();
         });
+
 
 
 
@@ -174,7 +178,17 @@ class GameScene extends Phaser.Scene {
             FruitGroup.add(fruit)
             FruitGroup.setVelocityX(600)
             fruit.rotation += 0.04;
+        } 
+        
+        for (var i = 0; i < FruitGroup.getChildren().length; i++) {
+            var fruits = FruitGroup.getChildren()[i];
+            fruits.rotation += 0.2;
+    
+            if (fruits.x > 1280) {
+                fruits.destroy();
+            }
         }
+
     }
 }
 export default GameScene;
