@@ -24,11 +24,12 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
         this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย.png", {frameWidth: 196,frameHeight: 201});
     }
 
     create() {
         //music
-        music = this.sound.add("song").setVolume(0.1);
+        music = this.sound.add("song").setVolume(0);
         music.play({ loop: true });
         //BackGround
         mainbg = this.add
@@ -79,11 +80,20 @@ class GameScene extends Phaser.Scene {
             key: "monsterOrangeanim",
             frames: this.anims.generateFrameNumbers("monsterOrange", {
                 start: 0,
-                end: 3,
+                end: 4,
             }),
             duration: 500,
             framerate: 0,
             repeat: -1,
+        });
+        this.anims.create({
+            key: "monsterOrangeDieanim",
+            frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
+                start: 2,
+                end: 6,
+            }),
+            duration: 400,
+            framerate: 0,
         });
 
         monsterGroup = this.physics.add.group();
@@ -132,10 +142,12 @@ class GameScene extends Phaser.Scene {
             monster.destroy();
         });
         this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
+            monster.anims.play("monsterOrangeDieanim", true);
+            monster.setVelocityX(0);
             fruit.destroy();
-            monster.destroy();
+            // delay: 5000;
+            // monster.destroy();
         });
-
 
 
 
@@ -157,11 +169,11 @@ class GameScene extends Phaser.Scene {
         
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
-            fruit = this.physics.add.image(player.x, player.y, 'fruit')
+            fruit = this.physics.add.image(player.x+50, player.y, 'fruit')
                 .setScale(0.1)
-            // fruit.rotation += 1;
             FruitGroup.add(fruit)
-            FruitGroup.setVelocityX(800)
+            FruitGroup.setVelocityX(600)
+            fruit.rotation += 0.04;
         }
     }
 }
