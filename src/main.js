@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import GameScene from './scenes/GameScene';
 import GameScene02 from './scenes/GameScene02';
 import GameScene03 from './scenes/GameScene03';
+import GameScene04 from './scenes/GameScene04';
 import MainMenu from './scenes/MainMenu';
 
 
@@ -17,17 +18,18 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     scene: [
         GameScene,
         GameScene02,
         GameScene03,
+        GameScene04,
         MainMenu
     ],
-    
-    
+
+
 };
 
 const game = new Phaser.Game(config);

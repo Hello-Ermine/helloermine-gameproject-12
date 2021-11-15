@@ -14,7 +14,7 @@ class MainMenu extends Phaser.Scene {
     preload() {
         this.load.image('bg', 'src/image/MainBG.jpg');
         this.load.image('play', 'src/image/start.png');
-        this.load.audio('mainmusic','src/image/song/mainsong.mp3');
+        this.load.audio('mainmusic', 'src/image/song/mainsong.mp3');
     }
 
     create() {
@@ -25,17 +25,17 @@ class MainMenu extends Phaser.Scene {
             .setOrigin(0, 0);
 
         //Button
-        buttonPlay = this.add.image(680,340, 'play').setScale(1.5);
+        buttonPlay = this.add.image(680, 340, 'play').setScale(1.5);
         buttonPlay.setInteractive();
-        buttonPlay.on('pointerup', ()=>{
+        buttonPlay.on('pointerup', () => {
             this.scene.start('GameScene')
         })
 
-        
+
     }
 
     update(delta, time) {
         bg.tilePositionX += 1;
-    }   
+    }
 }
 export default MainMenu;

@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 
 let mainbg, block, block2, player, enemy1, FruitGroup,
-    FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
+    FruitEvent, fruit, monster, monster1, monsterss, monsterGroup, monsterSpawn, monsterSpawns,
+    heartGroup, playerHeart;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 let home;
@@ -21,10 +22,12 @@ class GameScene extends Phaser.Scene {
         this.load.image("block", "src/image/block2.png");
 
         this.load.image("fruit", "src/image/ninja-fruit.png");
-        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
+        this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
         this.load.audio("song", "src/image/song/gamesong.mp3");
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", {frameWidth: 205,frameHeight: 201});
+        this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", { frameWidth: 372, frameHeight: 293 });
+        this.load.spritesheet("monsterSheapDie", "src/image/แกะตุย.png", { frameWidth: 376, frameHeight: 293 });
+        this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", { frameWidth: 376, frameHeight: 293 });
+        this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", { frameWidth: 405, frameHeight: 407 });
     }
 
     create() {
@@ -77,8 +80,8 @@ class GameScene extends Phaser.Scene {
 
         //Enemy set
         this.anims.create({
-            key: "monsterOrangeanim",
-            frames: this.anims.generateFrameNumbers("monsterOrange", {
+            key: "monsterSheapanim",
+            frames: this.anims.generateFrameNumbers("monsterSheap", {
                 start: 0,
                 end: 4,
             }),
@@ -88,8 +91,8 @@ class GameScene extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "monsterOrangeDieanim",
-            frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
+            key: "monsterSheapDieanim",
+            frames: this.anims.generateFrameNumbers("monsterSheapDie", {
                 start: 2,
                 end: 6,
             }),
@@ -97,29 +100,67 @@ class GameScene extends Phaser.Scene {
             framerate: 0,
         });
 
+        this.anims.create({
+            key: "monsterSheapSleepanim",
+            frames: this.anims.generateFrameNumbers("monsterSheapSleep", {
+                start: 2,
+                end: 6,
+            }),
+            duration: 400,
+            framerate: 0,
+        });
+
+        this.anims.create({
+            key: "monsterSheapSkillanim",
+            frames: this.anims.generateFrameNumbers("monsterSheapSkill", {
+                start: 0,
+                end: 2,
+            }),
+            duration: 400,
+            framerate: 0,
+        });
+
+
         monsterGroup = this.physics.add.group();
+
+        monster1 = this.physics.add
+            .sprite(1100, 500, "monsterSheapSleep")
+            .setScale(0.5)
+            .setVelocityX(0);
+
+        monsterSpawns = this.time.addEvent({
+            delay: 500,
+            callback: function () {
+                monsterGroup.add(monster1)
+                    .setVelocityX(0);
+                monster1.anims.play("monsterSheapanim", true)
+                monster1.flipX = false;
+            },
+            callbackScope: this,
+            loop: false,
+            pause: false
+        });
 
         monsterSpawn = this.time.addEvent({
             delay: 3000,
             callback: function () {
                 monster = this.physics.add
-                    .sprite(Phaser.Math.Between(900, 1100),
-                        Phaser.Math.Between(400, 600), 'monsterOrange')
+                    .sprite(Phaser.Math.Between(1000, 1280),
+                        Phaser.Math.Between(400, 600), 'monsterSheap')
                     .setDepth(8)
-                    .setScale(0.7)
+                    .setScale(0.4)
                     .setSize(100, 160)
                     .setOffset(50, 10);
                 monsterGroup.add(monster)
                     .setVelocityX(-600);
-                monster.anims.play("monsterOrangeanim", true)
-                .setSize(100, 160)
-                .setOffset(50, 10);
-                monster.flipX = true;
+                monster.anims.play("monsterSheapanim", true)
+                monster.flipX = false;
             },
             callbackScope: this,
             loop: true,
             pause: false
         });
+
 
         //Fruit set
         FruitGroup = this.physics.add.group();
@@ -145,14 +186,25 @@ class GameScene extends Phaser.Scene {
             monster.destroy();
         });
 
-        this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
-            monster.anims.play("monsterOrangeDieanim", true);
+
+        this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
+            monster.anims.play("monsterSheapDieanim", true);
             monster.setVelocityX(0);
             fruit.destroy();
-            // monster.destroy();
+            this.time.addEvent({
+                delay: 500,
+                callback: function () {
+                    monster.destroy();
+                    // monster1.destroy();
+                },
+                callbackScope: this,
+                loop: false
+            })
         });
 
-
+        // this.physics.add.overlap(monsterGroup, block2, (monsterGroup, block2) => {
+        //     monster.destroy();
+        // })
 
 
 
@@ -163,27 +215,27 @@ class GameScene extends Phaser.Scene {
         player.anims.play("playerrun", true);
 
         //Key WS STOP
-        if (keyS.isDown) {player.setVelocityY(300);} 
-        else if (keyW.isDown) {player.setVelocityY(-300);}
-        else {player.setVelocityY(0);}
+        if (keyS.isDown) { player.setVelocityY(300); }
+        else if (keyW.isDown) { player.setVelocityY(-300); }
+        else { player.setVelocityY(0); }
         //Key AD STOP
-        if (keyA.isDown) {player.setVelocityX(-300);}
-        else if (keyD.isDown) {player.setVelocityX(1000);}
-        else {player.setVelocityX(0);}
-        
+        if (keyA.isDown) { player.setVelocityX(-300); }
+        else if (keyD.isDown) { player.setVelocityX(1000); }
+        else { player.setVelocityX(0); }
+
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
-            fruit = this.physics.add.image(player.x+50, player.y, 'fruit')
+            fruit = this.physics.add.image(player.x + 50, player.y, 'fruit')
                 .setScale(0.1)
             FruitGroup.add(fruit)
             FruitGroup.setVelocityX(600)
             fruit.rotation += 0.04;
-        } 
-        
+        }
+
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {
             var fruits = FruitGroup.getChildren()[i];
             fruits.rotation += 0.2;
-    
+
             if (fruits.x > 1280) {
                 fruits.destroy();
             }
