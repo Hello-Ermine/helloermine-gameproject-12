@@ -40,14 +40,21 @@ class GameScene03 extends Phaser.Scene {
         //--------------------------------------music--------------------------------------//
         music = this.sound.add("song").setVolume(0.1);
         music.play({ loop: true });
+<<<<<<< Updated upstream
 
         //--------------------------------------BackGround--------------------------------------//
+=======
+        //BackGround
+>>>>>>> Stashed changes
         bgRun01 = this.add
             .tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
             .setOrigin(0);
+<<<<<<< Updated upstream
 
         //--------------------------------------block--------------------------------------//
+=======
+>>>>>>> Stashed changes
         block = this.physics.add
             .image(355, -20, "block")
             .setDepth(100)
@@ -62,6 +69,7 @@ class GameScene03 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+<<<<<<< Updated upstream
         block3 = this.physics.add
             .image(-110, 20, "block")
             .setDepth(100)
@@ -78,6 +86,10 @@ class GameScene03 extends Phaser.Scene {
             .setOffset(1250, 300);
 
         //--------------------------------------player--------------------------------------//
+=======
+
+        //Player
+>>>>>>> Stashed changes
         player = this.physics.add
             .sprite(100, 450, "player")
             .setDepth(10)
@@ -137,7 +149,11 @@ class GameScene03 extends Phaser.Scene {
             delay: 3000,
             callback: function () {
                 monster = this.physics.add
+<<<<<<< Updated upstream
                     .sprite(Phaser.Math.Between(1000, 1280),
+=======
+                    .sprite(Phaser.Math.Between(900, 1100),
+>>>>>>> Stashed changes
                         Phaser.Math.Between(400, 600), 'monsterOrange')
                     .setDepth(8)
                     .setScale(0.7)
@@ -149,6 +165,7 @@ class GameScene03 extends Phaser.Scene {
                 monster.flipX = true;
             },
             callbackScope: this,
+<<<<<<< Updated upstream
             loop: false,
             repeat: 10,
             pause: false
@@ -207,6 +224,9 @@ class GameScene03 extends Phaser.Scene {
             callbackScope: this,
             loop: false,
             repeat: 10,
+=======
+            loop: true,
+>>>>>>> Stashed changes
             pause: false
         });
 
@@ -312,10 +332,17 @@ class GameScene03 extends Phaser.Scene {
         else if (keyW.isDown) { player.setVelocityY(-500); }
         else { player.setVelocityY(0); }
         //Key AD STOP
+<<<<<<< Updated upstream
         if (keyA.isDown) { player.setVelocityX(-300); }
         else if (keyD.isDown) { player.setVelocityX(300); }
         else { player.setVelocityX(0); }
 
+=======
+        if (keyA.isDown) {player.setVelocityX(-300);}
+        else if (keyD.isDown) {player.setVelocityX(300);}
+        else {player.setVelocityX(0);}
+        
+>>>>>>> Stashed changes
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
             fruit = this.physics.add.image(player.x, player.y, 'fruit')

@@ -1,8 +1,13 @@
 import Phaser from "phaser";
 
+<<<<<<< Updated upstream
 let mainbg, block, block2, block3, block4, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monster1, monsterss, monsterGroup, monsterSpawn, monsterSpawns,
     heartGroup, playerHeart;
+=======
+let mainbg, block, block2, player, enemy1, FruitGroup,
+    FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
+>>>>>>> Stashed changes
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 let home;
@@ -22,6 +27,7 @@ class GameScene extends Phaser.Scene {
         this.load.image("block", "src/image/block2.png");
 
         this.load.image("fruit", "src/image/ninja-fruit.png");
+<<<<<<< Updated upstream
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
         this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", { frameWidth: 372, frameHeight: 293 });
@@ -29,6 +35,12 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", { frameWidth: 376, frameHeight: 293 });
         this.load.spritesheet("monsterSheapAtk", "src/image/แกะตี2.png", { frameWidth: 500, frameHeight: 293 });
         this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", { frameWidth: 405, frameHeight: 407 });
+=======
+        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
+        this.load.audio("song", "src/image/song/gamesong.mp3");
+        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย.png", {frameWidth: 196,frameHeight: 201});
+>>>>>>> Stashed changes
     }
 
     create() {
@@ -55,6 +67,7 @@ class GameScene extends Phaser.Scene {
             .setOffset(0, 0);
         block2 = this.physics.add
             .image(355, 20, "block")
+<<<<<<< Updated upstream
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -62,11 +75,14 @@ class GameScene extends Phaser.Scene {
             .setOffset(1250, 300);
         block3 = this.physics.add
             .image(-110, 20, "block")
+=======
+>>>>>>> Stashed changes
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+<<<<<<< Updated upstream
         // block4 = this.physics.add
         //     .image(-200, 20, "block")
         //     .setDepth(100)
@@ -76,6 +92,8 @@ class GameScene extends Phaser.Scene {
         //     .setOffset(1250, 300);
 
 
+=======
+>>>>>>> Stashed changes
 
         //Player
         player = this.physics.add
@@ -118,6 +136,7 @@ class GameScene extends Phaser.Scene {
             framerate: 0,
         });
 
+<<<<<<< Updated upstream
         this.anims.create({
             key: "monsterSheapSleepanim",
             frames: this.anims.generateFrameNumbers("monsterSheapSleep", {
@@ -173,24 +192,41 @@ class GameScene extends Phaser.Scene {
             pause: false
         });
 
+=======
+        monsterGroup = this.physics.add.group();
+
+>>>>>>> Stashed changes
         monsterSpawn = this.time.addEvent({
             delay: 1000,
             callback: function () {
                 monster = this.physics.add
+<<<<<<< Updated upstream
                     .sprite(Phaser.Math.Between(1200, 1280),
                         Phaser.Math.Between(300, 700), 'monsterSheap')
+=======
+                    .sprite(Phaser.Math.Between(900, 1100),
+                        Phaser.Math.Between(400, 600), 'monsterOrange')
+>>>>>>> Stashed changes
                     .setDepth(8)
                     .setScale(0.4)
                     .setSize(100, 160)
                     .setOffset(50, 10);
                 monsterGroup.add(monster)
                     .setVelocityX(-600);
+<<<<<<< Updated upstream
                 monster.anims.play("monsterSheapanim", true)
                 monster.flipX = false;
             },
             callbackScope: this,
             loop: false,
             repeat: 10,
+=======
+                monster.anims.play("monsterOrangeanim", true);
+                monster.flipX = true;
+            },
+            callbackScope: this,
+            loop: true,
+>>>>>>> Stashed changes
             pause: false
         });
 
@@ -215,6 +251,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
         //Vs monster
+<<<<<<< Updated upstream
         this.physics.add.overlap(player, monsterGroup, (player, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
             monster.setVelocityX(0);
@@ -260,6 +297,19 @@ class GameScene extends Phaser.Scene {
         // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
         //     monster.anims.play("monsterSheapAtkanim", true);
         // })
+=======
+        this.physics.add.collider(player, monsterGroup, (player, monster) => {
+            monster.destroy();
+        });
+        this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
+            monster.anims.play("monsterOrangeDieanim", true);
+            monster.setVelocityX(0);
+            fruit.destroy();
+            // delay: 5000;
+            // monster.destroy();
+        });
+
+>>>>>>> Stashed changes
 
 
 
@@ -270,9 +320,15 @@ class GameScene extends Phaser.Scene {
         player.anims.play("playerrun", true);
 
         //Key WS STOP
+<<<<<<< Updated upstream
         if (keyS.isDown) { player.setVelocityY(500); }
         else if (keyW.isDown) { player.setVelocityY(-500); }
         else { player.setVelocityY(0); }
+=======
+        if (keyS.isDown) {player.setVelocityY(300);} 
+        else if (keyW.isDown) {player.setVelocityY(-300);}
+        else {player.setVelocityY(0);}
+>>>>>>> Stashed changes
         //Key AD STOP
         if (keyA.isDown) { player.setVelocityX(-300); }
         else if (keyD.isDown) { player.setVelocityX(1000); }
@@ -285,6 +341,7 @@ class GameScene extends Phaser.Scene {
             FruitGroup.add(fruit)
             FruitGroup.setVelocityX(600)
             fruit.rotation += 0.04;
+<<<<<<< Updated upstream
         }
 
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {
@@ -294,6 +351,8 @@ class GameScene extends Phaser.Scene {
             if (fruits.x > 1280) {
                 fruits.destroy();
             }
+=======
+>>>>>>> Stashed changes
         }
 
         // for (var i = 0; i < monsterGroup.getChildren().length; i++) {

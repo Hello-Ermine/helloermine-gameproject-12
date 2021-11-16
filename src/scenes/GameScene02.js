@@ -47,6 +47,7 @@ class GameScene02 extends Phaser.Scene {
             .setOffset(0, 0);
         block2 = this.physics.add
             .image(355, 20, "block")
+<<<<<<< Updated upstream
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -54,11 +55,14 @@ class GameScene02 extends Phaser.Scene {
             .setOffset(1250, 300);
         block3 = this.physics.add
             .image(-110, 20, "block")
+=======
+>>>>>>> Stashed changes
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+<<<<<<< Updated upstream
         block4 = this.physics.add
             .image(-450, 20, "block")
             .setDepth(100)
@@ -66,6 +70,8 @@ class GameScene02 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+=======
+>>>>>>> Stashed changes
 
         //Player
         player = this.physics.add
@@ -139,7 +145,11 @@ class GameScene02 extends Phaser.Scene {
             delay: 1000,
             callback: function () {
                 monster = this.physics.add
+<<<<<<< Updated upstream
                     .sprite(Phaser.Math.Between(1000, 1280),
+=======
+                    .sprite(Phaser.Math.Between(900, 1100),
+>>>>>>> Stashed changes
                         Phaser.Math.Between(400, 600), 'monsterOrange')
                     .setDepth(8)
                     .setScale(0.7)
@@ -222,10 +232,17 @@ class GameScene02 extends Phaser.Scene {
         else if (keyW.isDown) { player.setVelocityY(-500); }
         else { player.setVelocityY(0); }
         //Key AD STOP
+<<<<<<< Updated upstream
         if (keyA.isDown) { player.setVelocityX(-300); }
         else if (keyD.isDown) { player.setVelocityX(300); }
         else { player.setVelocityX(0); }
 
+=======
+        if (keyA.isDown) {player.setVelocityX(-300);}
+        else if (keyD.isDown) {player.setVelocityX(300);}
+        else {player.setVelocityX(0);}
+        
+>>>>>>> Stashed changes
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
             fruit = this.physics.add.image(player.x, player.y, 'fruit')
