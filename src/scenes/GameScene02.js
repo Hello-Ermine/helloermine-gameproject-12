@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-let bgRun01, block, block2, player, enemy1, FruitGroup,
+let bgRun01, block, block2, block3, block4, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
@@ -25,6 +25,8 @@ class GameScene02 extends Phaser.Scene {
         this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193 });
         this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201 });
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201 });
+        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193 });
     }
 
     create() {
@@ -45,6 +47,20 @@ class GameScene02 extends Phaser.Scene {
             .setOffset(0, 0);
         block2 = this.physics.add
             .image(355, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
+        block3 = this.physics.add
+            .image(-110, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
+        block4 = this.physics.add
+            .image(-450, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -91,13 +107,39 @@ class GameScene02 extends Phaser.Scene {
             framerate: 0,
         });
 
+        this.anims.create({
+            key: "monsterOrangeAtkanim",
+            frames: this.anims.generateFrameNumbers("monsterOrangeAtk", {
+                start: 0,
+                end: 3,
+
+            }),
+            duration: 400,
+            framerate: 0,
+            loop: true,
+            pause: false,
+        });
+
+        this.anims.create({
+            key: "monsterOrangeAtkanim2",
+            frames: this.anims.generateFrameNumbers("monsterOrangeAtk", {
+                start: 0,
+                end: 3,
+
+            }),
+            duration: 400,
+            framerate: 0,
+            loop: true,
+            pause: false,
+        });
+
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 3000,
+            delay: 1000,
             callback: function () {
                 monster = this.physics.add
-                    .sprite(Phaser.Math.Between(900, 1100),
+                    .sprite(Phaser.Math.Between(1000, 1280),
                         Phaser.Math.Between(400, 600), 'monsterOrange')
                     .setDepth(8)
                     .setScale(0.7)
@@ -109,7 +151,8 @@ class GameScene02 extends Phaser.Scene {
                 monster.flipX = true;
             },
             callbackScope: this,
-            loop: true,
+            loop: false,
+            repeat: 10,
             pause: false
         });
 
@@ -136,12 +179,23 @@ class GameScene02 extends Phaser.Scene {
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
         });
+
+        this.physics.add.overlap(monsterGroup, block3, (monsterGroup, block3) => {
+            monster.anims.play("monsterOrangeAtkanim", true);
+            monster.setVelocityX(-900);
+        })
+
+        this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
+            monster.anims.play("monsterOrangeanim", true);
+            // monster.setVelocityX(-600);
+        })
+
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
             monster.setVelocityX(1000);
             fruit.destroy();
             this.time.addEvent({
-                delay: 500,
+                delay: 200,
                 callback: function () {
                     monster.destroy();
                 },
@@ -149,6 +203,7 @@ class GameScene02 extends Phaser.Scene {
                 loop: false
             })
         });
+
         this.physics.add.overlap(monsterGroup, block2, (monsterGroup, block2) => {
             monster.destroy();
         });
@@ -163,8 +218,8 @@ class GameScene02 extends Phaser.Scene {
         player.anims.play("playerrun", true);
 
         //Key WS STOP
-        if (keyS.isDown) { player.setVelocityY(300); }
-        else if (keyW.isDown) { player.setVelocityY(-300); }
+        if (keyS.isDown) { player.setVelocityY(500); }
+        else if (keyW.isDown) { player.setVelocityY(-500); }
         else { player.setVelocityY(0); }
         //Key AD STOP
         if (keyA.isDown) { player.setVelocityX(-300); }
