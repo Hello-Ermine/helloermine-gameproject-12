@@ -1,13 +1,12 @@
 import Phaser from "phaser";
 
-let bgRun01, block, block2, block3, block4, player, enemy1, FruitGroup,
+let bgRun01, block, block2, block3, block4, player, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn,
     monster2Group, monster2Spawn, monster2,
     monster3Group, monster3Spawn, monster3,
     Bulletmonster3Group, Bulletmonster3Spawn, Bulletmonster3;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
-let home;
 
 class GameScene04 extends Phaser.Scene {
 
@@ -21,9 +20,7 @@ class GameScene04 extends Phaser.Scene {
         this.load.image("mainbg", "src/image/bgnight01.png");
         this.load.image("bgRun01", "src/image/bgnight02.png");
         this.load.image("home", "src/image/home.png");
-
         this.load.image("block", "src/image/block2.png");
-
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
         this.load.audio("song", "src/image/song/gamesong.mp3");
@@ -39,7 +36,7 @@ class GameScene04 extends Phaser.Scene {
         this.load.spritesheet("monsterPinkAtk", "src/image/ชมพูตี.png", { frameWidth: 300, frameHeight: 165 });
 
         //--------------------------------------มอนม่วง--------------------------------------//
-        this.load.spritesheet("monsterPurple", "src/image/ม่วงเดิน.png", { frameWidth: 122, frameHeight: 130 });
+        this.load.spritesheet("monsterPurple", "src/image/ม่วงยืน.png", { frameWidth: 122, frameHeight: 130 });
         this.load.spritesheet("monsterPurpleDie", "src/image/ม่วงตุย.png", { frameWidth: 122, frameHeight: 130 });
         this.load.spritesheet("monsterPurpleAtk", "src/image/ม่วงตี.png", { frameWidth: 122, frameHeight: 130 });
         this.load.spritesheet("monsterPurpleHurt", "src/image/ม่วงเจ็บ.png", { frameWidth: 122, frameHeight: 130 });
@@ -52,35 +49,30 @@ class GameScene04 extends Phaser.Scene {
         music.play({ loop: true });
 
         //--------------------------------------BackGround--------------------------------------//
-        bgRun01 = this.add
-            .tileSprite(0, 0, 1280, 720, "bgRun01")
+        bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
             .setOrigin(0);
 
         //--------------------------------------block--------------------------------------//
-        block = this.physics.add
-            .image(355, -20, "block")
+        block = this.physics.add.image(355, -20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(1280, 0)
             .setOffset(0, 0);
-        block2 = this.physics.add
-            .image(355, 20, "block")
+        block2 = this.physics.add.image(355, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
-        block3 = this.physics.add
-            .image(-110, 20, "block")
+        block3 = this.physics.add.image(-110, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
-        block4 = this.physics.add
-            .image(-450, 20, "block")
+        block4 = this.physics.add.image(-450, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -88,8 +80,7 @@ class GameScene04 extends Phaser.Scene {
             .setOffset(1250, 300);
 
         //--------------------------------------player--------------------------------------//
-        player = this.physics.add
-            .sprite(100, 450, "player")
+        player = this.physics.add.sprite(100, 450, "player")
             .setDepth(10)
             .setScale(0.7)
             .setSize(100, 100)
@@ -255,7 +246,7 @@ class GameScene04 extends Phaser.Scene {
                 start: 0,
                 end: 4,
             }),
-            duration: 600,
+            duration: 1200,
             framerate: 0,
             // loop: true,
             // pause: false,
@@ -267,12 +258,11 @@ class GameScene04 extends Phaser.Scene {
         monster3Spawn = this.time.addEvent({
             delay: 100,
             callback: function () {
-                monster3 = this.physics.add
-                    .sprite(1100, 400, 'monsterPurple')
+                monster3 = this.physics.add.sprite(1080, 500, 'monsterPurple')
                     .setDepth(8)
-                    .setScale(4.8)
-                    .setSize(100, 160)
-                    .setOffset(50, 10);
+                    .setScale(3)
+                    .setSize(100,100)
+                    .setOffset(10,10);
                 monster3Group.add(monster3)
                     .setVelocityX(0);
                 monster3.anims.play("monsterPurpleanim", true);
@@ -288,17 +278,15 @@ class GameScene04 extends Phaser.Scene {
         Bulletmonster3Group = this.physics.add.group();
 
         Bulletmonster3Spawn = this.time.addEvent({
-            delay: 500,
+            delay: 800,
             callback: function () {
-                Bulletmonster3 = this.physics.add
-                    .sprite(1100,
-                        Phaser.Math.Between(350, 650), 'monsterPurpleSkill')
+                Bulletmonster3 = this.physics.add.sprite(1100,Phaser.Math.Between(250, 650), 'monsterPurpleSkill')
                     .setDepth(7)
                     .setScale(1)
-                    .setSize(100, 160)
-                    .setOffset(50, 10);
+                    .setSize(0, 0)
+                    .setOffset(0, 0);
                 Bulletmonster3Group.add(Bulletmonster3)
-                    .setVelocityX(-600);
+                    .setVelocityX(-400);
                 Bulletmonster3.anims.play("monsterPurpleSkillanim", true);
                 Bulletmonster3.flipX = true;
             },
@@ -324,12 +312,14 @@ class GameScene04 extends Phaser.Scene {
             music.stop();
             this.scene.start('GameScene02')
         });
-        this.physics.add.collider(player, home);
-        this.physics.add.collider(player, enemy1);
-
+        
         //--------------------------------------player Vs monster--------------------------------------//
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
+        });
+        this.physics.add.collider(FruitGroup, Bulletmonster3Group, (fruit, Bulletmonster3) => {
+            fruit.destroy();
+            Bulletmonster3.destroy();
         });
 
 
@@ -415,7 +405,7 @@ class GameScene04 extends Phaser.Scene {
 
 
     update() {
-        bgRun01.tilePositionX += 12;
+        bgRun01.tilePositionX += 3;
         player.anims.play("playerrun", true);
 
         //Key WS STOP
@@ -445,8 +435,6 @@ class GameScene04 extends Phaser.Scene {
                 fruits.destroy();
             }
         }
-
-
     }
 }
 
