@@ -201,6 +201,7 @@ class GameScene extends Phaser.Scene {
         //Vs monster
         this.physics.add.overlap(player, monsterGroup, (player, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
+            this.scene.start('DeathScene')
             monster.setVelocityX(0);
 
             this.time.addEvent({
@@ -213,20 +214,14 @@ class GameScene extends Phaser.Scene {
             });
         });
 
-        this.physics.add.overlap(
-            monsterGroup,
-            block3,
-            (monsterGroup, block3) => {
-                monster.anims.play("monsterSheapAtkanim", true);
-                monster.setVelocityX(-900);
+        this.physics.add.overlap(monsterGroup,block3,(monsterGroup, block3) => {
+            monster.anims.play("monsterSheapAtkanim", true);
+            monster.setVelocityX(-900);
             }
         );
 
-        this.physics.add.overlap(
-            monsterGroup,
-            block3,
-            (monsterGroup, block3) => {
-                monster1.anims.play("monsterSheapAtkanim", true);
+        this.physics.add.overlap(monsterGroup,block3,(monsterGroup, block3) => {
+            monster1.anims.play("monsterSheapAtkanim", true);
             }
         );
 

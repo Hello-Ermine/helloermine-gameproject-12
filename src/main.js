@@ -4,6 +4,8 @@ import GameScene from './scenes/GameScene';
 import GameScene02 from './scenes/GameScene02';
 import GameScene03 from './scenes/GameScene03';
 import GameScene04 from './scenes/GameScene04';
+import DeathScene from './scenes/DeathScene';
+import WinScene from './scenes/WinScene';
 import MainMenu from './scenes/MainMenu';
 
 
@@ -22,11 +24,14 @@ const config = {
         }
     },
     scene: [
+        MainMenu,
         GameScene,
         GameScene02,
         GameScene03,
         GameScene04,
-        MainMenu
+        DeathScene,
+        WinScene,
+        
     ],
 
 

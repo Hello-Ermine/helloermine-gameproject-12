@@ -310,7 +310,7 @@ class GameScene04 extends Phaser.Scene {
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
             music.stop();
-            this.scene.start('GameScene02')
+            this.scene.start('WinScene')
         });
         
         //--------------------------------------player Vs monster--------------------------------------//
