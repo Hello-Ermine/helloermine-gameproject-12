@@ -1,10 +1,26 @@
 import Phaser from "phaser";
 
+<<<<<<< Updated upstream
 let mainbg, block, block2, player, enemy1, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
+=======
+let mainbg,home,block,block2,block3,
+    player,
+    enemy1,
+    FruitGroup,
+    FruitEvent,
+    fruit,
+    monster,
+    monster1,
+    monsterss,
+    monsterGroup,
+    monsterSpawn,
+    monsterSpawns,
+    heartGroup,
+    playerHeart;
+>>>>>>> Stashed changes
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
-let home;
 
 class GameScene extends Phaser.Scene {
     constructor(test) {
@@ -17,14 +33,22 @@ class GameScene extends Phaser.Scene {
         this.load.image("mainbg", "src/image/bgnight01.png");
         this.load.image("bgRun01", "src/image/bgnight02.png");
         this.load.image("home", "src/image/home.png");
-
         this.load.image("block", "src/image/block2.png");
-
         this.load.image("fruit", "src/image/ninja-fruit.png");
+<<<<<<< Updated upstream
         this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
         this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
         this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย.png", {frameWidth: 196,frameHeight: 201});
+=======
+        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280,});
+        this.load.audio("song", "src/image/song/gamesong.mp3");
+        this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", {frameWidth: 372,frameHeight: 293,});
+        this.load.spritesheet("monsterSheapDie", "src/image/แกะตุย.png", {frameWidth: 376,frameHeight: 293,});
+        this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", {frameWidth: 376,frameHeight: 293,});
+        this.load.spritesheet("monsterSheapAtk", "src/image/แกะตี2.png", {frameWidth: 500,frameHeight: 293,});
+        this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", {frameWidth: 405,frameHeight: 407,});
+>>>>>>> Stashed changes
     }
 
     create() {
@@ -32,34 +56,38 @@ class GameScene extends Phaser.Scene {
         music = this.sound.add("song").setVolume(0);
         music.play({ loop: true });
         //BackGround
-        mainbg = this.add
-            .tileSprite(0, 0, 1280, 720, "mainbg")
+        mainbg = this.add.tileSprite(0, 0, 1280, 720, "mainbg")
             .setDepth(0)
             .setOrigin(0);
-        home = this.physics.add
-            .image(0, 0, "home")
+        home = this.physics.add.image(0, 0, "home")
             .setDepth(9)
             .setOrigin(0)
             .setImmovable()
             .setOffset(-350, 500);
-        block = this.physics.add
-            .image(355, -20, "block")
+        block = this.physics.add.image(355, -20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(1280, 0)
             .setOffset(0, 0);
-        block2 = this.physics.add
-            .image(355, 20, "block")
+        block2 = this.physics.add.image(355, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+<<<<<<< Updated upstream
+=======
+        block3 = this.physics.add.image(-110, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
+>>>>>>> Stashed changes
 
         //Player
-        player = this.physics.add
-            .sprite(400, 600, "player")
+        player = this.physics.add.sprite(400, 600, "player")
             .setDepth(10)
             .setScale(0.7)
             .setSize(100, 100)
@@ -96,18 +124,72 @@ class GameScene extends Phaser.Scene {
             framerate: 0,
         });
 
+<<<<<<< Updated upstream
         monsterGroup = this.physics.add.group();
 
+=======
+        this.anims.create({
+            key: "monsterSheapAtkanim",
+            frames: this.anims.generateFrameNumbers("monsterSheapAtk", {
+                start: 0,
+                end: 8,
+            }),
+            duration: 1000,
+            loop: true,
+            pause: false,
+            framerate: 0,
+        });
+
+        this.anims.create({
+            key: "monsterSheapSkillanim",
+            frames: this.anims.generateFrameNumbers("monsterSheapSkill", {
+                start: 1,
+                end: 3,
+            }),
+            duration: 600,
+            framerate: 0,
+            // loop: true,
+            // pause: false,
+        });
+
+        monsterGroup = this.physics.add.group();
+
+        monster1 = this.physics.add.sprite(1100, 500, "monsterSheapSleep")
+            .setScale(0.5)
+            .setVelocityX(0);
+
+        monsterSpawns = this.time.addEvent({
+            delay: 500,
+            callback: function () {
+                monsterGroup.add(monster1).setVelocityX(0);
+                monster1.anims.play("monsterSheapanim", true);
+                monster1.flipX = false;
+            },
+            callbackScope: this,
+            loop: false,
+            pause: false,
+        });
+
+>>>>>>> Stashed changes
         monsterSpawn = this.time.addEvent({
             delay: 3000,
             callback: function () {
                 monster = this.physics.add
+<<<<<<< Updated upstream
                     .sprite(Phaser.Math.Between(900, 1100),
                         Phaser.Math.Between(400, 600), 'monsterOrange')
+=======
+                    .sprite(
+                        Phaser.Math.Between(1200, 1280),
+                        Phaser.Math.Between(300, 700),
+                        "monsterSheap"
+                    )
+>>>>>>> Stashed changes
                     .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
                     .setOffset(50, 10);
+<<<<<<< Updated upstream
                 monsterGroup.add(monster)
                     .setVelocityX(-600);
                 monster.anims.play("monsterOrangeanim", true);
@@ -116,6 +198,16 @@ class GameScene extends Phaser.Scene {
             callbackScope: this,
             loop: true,
             pause: false
+=======
+                monsterGroup.add(monster).setVelocityX(-600);
+                monster.anims.play("monsterSheapanim", true);
+                monster.flipX = false;
+            },
+            callbackScope: this,
+            loop: false,
+            repeat: 10,
+            pause: false,
+>>>>>>> Stashed changes
         });
 
         //Fruit set
@@ -132,12 +224,13 @@ class GameScene extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            this.scene.start('GameScene02');
+            this.scene.start("GameScene02");
             music.stop();
         });
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, enemy1);
         //Vs monster
+<<<<<<< Updated upstream
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
         });
@@ -152,6 +245,65 @@ class GameScene extends Phaser.Scene {
 
 
 
+=======
+        this.physics.add.overlap(player, monsterGroup, (player, monster) => {
+            monster.anims.play("monsterSheapSkillanim", true);
+            monster.setVelocityX(0);
+
+            this.time.addEvent({
+                delay: 500,
+                callback: function () {
+                    monster.destroy();
+                },
+                callbackScope: this,
+                loop: false,
+            });
+        });
+
+        this.physics.add.overlap(
+            monsterGroup,
+            block3,
+            (monsterGroup, block3) => {
+                monster.anims.play("monsterSheapAtkanim", true);
+                monster.setVelocityX(-800);
+            }
+        );
+
+        this.physics.add.overlap(
+            monsterGroup,
+            block3,
+            (monsterGroup, block3) => {
+                monster1.anims.play("monsterSheapAtkanim", true);
+            }
+        );
+
+        this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
+            monster.anims.play("monsterSheapDieanim", true);
+            monster.setVelocityX(0);
+            fruit.destroy();
+            this.time.addEvent({
+                delay: 500,
+                callback: function () {
+                    monster.destroy();
+                    // monster1.destroy();
+                },
+                callbackScope: this,
+                loop: false,
+            });
+        });
+
+        this.physics.add.overlap(
+            monsterGroup,
+            block2,
+            (monsterGroup, block2) => {
+                monster.destroy();
+            }
+        );
+
+        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
+        //     monster.anims.play("monsterSheapAtkanim", true);
+        // })
+>>>>>>> Stashed changes
     }
 
     update(delta, time) {
@@ -159,6 +311,7 @@ class GameScene extends Phaser.Scene {
         player.anims.play("playerrun", true);
 
         //Key WS STOP
+<<<<<<< Updated upstream
         if (keyS.isDown) {player.setVelocityY(300);} 
         else if (keyW.isDown) {player.setVelocityY(-300);}
         else {player.setVelocityY(0);}
@@ -173,6 +326,31 @@ class GameScene extends Phaser.Scene {
                 .setScale(0.1)
             FruitGroup.add(fruit)
             FruitGroup.setVelocityX(600)
+=======
+        if (keyS.isDown) {
+            player.setVelocityY(500);
+        } else if (keyW.isDown) {
+            player.setVelocityY(-500);
+        } else {
+            player.setVelocityY(0);
+        }
+        //Key AD STOP
+        if (keyA.isDown) {
+            player.setVelocityX(-300);
+        } else if (keyD.isDown) {
+            player.setVelocityX(1000);
+        } else {
+            player.setVelocityX(0);
+        }
+
+        //KeyQ
+        if (Phaser.Input.Keyboard.JustDown(keyQ)) {
+            fruit = this.physics.add
+                .image(player.x + 50, player.y, "fruit")
+                .setScale(0.1);
+            FruitGroup.add(fruit);
+            FruitGroup.setVelocityX(600);
+>>>>>>> Stashed changes
             fruit.rotation += 0.04;
         }
     }

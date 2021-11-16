@@ -17,7 +17,11 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
+<<<<<<< Updated upstream
             debug:false
+=======
+            debug: true
+>>>>>>> Stashed changes
         }
     },
     scene: [
