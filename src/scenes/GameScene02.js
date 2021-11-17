@@ -164,6 +164,7 @@ class GameScene02 extends Phaser.Scene {
         //Vs monster
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
+            this.scene.start('DeathScene')
         });
 
         this.physics.add.overlap(

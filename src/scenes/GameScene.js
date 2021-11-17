@@ -17,7 +17,7 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("mainbg", "src/image/bgnight01.png");
+        this.load.image("mainbg", "src/image/bgmorning.png");
         this.load.image("bgRun01", "src/image/bgnight02.png");
         this.load.image("home", "src/image/home.png");
         this.load.image("block", "src/image/block2.png");

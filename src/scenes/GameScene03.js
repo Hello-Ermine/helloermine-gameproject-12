@@ -276,7 +276,10 @@ class GameScene03 extends Phaser.Scene {
 
         //--------------------------------------player Vs monster--------------------------------------//
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
-            monster.destroy();
+            this.scene.start('DeathScene')
+        });
+        this.physics.add.collider(player, monster2Group, (player, monster2) => {
+            this.scene.start('DeathScene')
         });
 
         //--------------------------------------fruit Vs มอนชมพู(ตาย)--------------------------------------//
