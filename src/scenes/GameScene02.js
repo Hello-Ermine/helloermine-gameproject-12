@@ -106,7 +106,7 @@ class GameScene02 extends Phaser.Scene {
                 start: 0,
                 end: 7,
             }),
-            duration: 100,
+            duration: 800,
             framerate: 0,
         });
 
@@ -137,7 +137,7 @@ class GameScene02 extends Phaser.Scene {
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 1000,
+            delay: 500,
             callback: function () {
                 monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(400, 600), "monsterOrange")
                     .setDepth(8)
@@ -204,9 +204,10 @@ class GameScene02 extends Phaser.Scene {
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
             monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
             fruit.destroy();
             this.time.addEvent({
-                delay: 200,
+                delay: 800,
                 callback: function () {
                     monster.destroy();
                 },

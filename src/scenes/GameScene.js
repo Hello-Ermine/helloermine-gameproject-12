@@ -53,7 +53,7 @@ class GameScene extends Phaser.Scene {
             .setDepth(0)
             .setOrigin(0);
         home = this.physics.add.image(0, 0, "home")
-            .setDepth(9)
+            .setDepth(5)
             .setOrigin(0)
             .setImmovable()
             .setOffset(-350, 500);
@@ -69,7 +69,7 @@ class GameScene extends Phaser.Scene {
             .setImmovable()
             .setSize(10, 720)
             .setOffset(1250, 300);
-        block3 = this.physics.add.image(-110, 20, "block")
+        block3 = this.physics.add.image(-20, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -118,10 +118,10 @@ class GameScene extends Phaser.Scene {
         this.anims.create({
             key: "monsterSheapDieanim",
             frames: this.anims.generateFrameNumbers("monsterSheapDie", {
-                start: 2,
+                start: 0,
                 end: 6,
             }),
-            duration: 100,
+            duration: 800,
             framerate: 0,
         });
 
@@ -141,7 +141,7 @@ class GameScene extends Phaser.Scene {
                 start: 0,
                 end: 8,
             }),
-            duration: 1000,
+            duration: 700,
             loop: true,
             pause: false,
             framerate: 0,
@@ -183,7 +183,7 @@ class GameScene extends Phaser.Scene {
                     .setScale(0.4)
                     .setSize(100, 160)
                     .setOffset(50, 10);
-                monsterGroup.add(monster).setVelocityX(-600);
+                monsterGroup.add(monster).setVelocityX(-300);
                 monster.anims.play("monsterSheapanim", true);
                 monster.flipX = false;
             },
@@ -206,6 +206,7 @@ class GameScene extends Phaser.Scene {
         //wallblock
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
+        this.physics.add.collider(player, home);
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene02");
         });
@@ -223,11 +224,9 @@ class GameScene extends Phaser.Scene {
                         }
         });
 
-        this.physics.add.collider(player, home);
-        //Vs monster
-        this.physics.add.overlap(player, monsterGroup, (player, monster) => {
+        //monster Vs home
+        this.physics.add.overlap(home, monsterGroup, (home, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
-            
             manyheart--;
                         for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
                             if (manyheart < i + 1) {
@@ -238,9 +237,31 @@ class GameScene extends Phaser.Scene {
                         }
             monster.setVelocityX(0);
             monster.setOffset(-2000,5000);
-
             this.time.addEvent({
-                delay: 500,
+                delay: 200,
+                callback: function () {
+                    monster.destroy();
+                },
+                callbackScope: this,
+                loop: false,
+            });
+        });
+
+        //Vs monster
+        this.physics.add.overlap(player, monsterGroup, (player, monster) => {
+            monster.anims.play("monsterSheapSkillanim", true);
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
+            this.time.addEvent({
+                delay: 200,
                 callback: function () {
                     monster.destroy();
                 },
@@ -251,7 +272,7 @@ class GameScene extends Phaser.Scene {
 
         this.physics.add.overlap(monsterGroup, block3, (monsterGroup, block3) => {
             monster.anims.play("monsterSheapAtkanim", true);
-            // monster.setVelocityX(-900);
+            monster.setVelocityX(-700);
         }
         );
 
@@ -264,9 +285,11 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterSheapDieanim", true);
             monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
+
             fruit.destroy();
             this.time.addEvent({
-                delay: 100,
+                delay: 800,
                 callback: function () {
                     monster.destroy();
                     // monster1.destroy();
@@ -283,7 +306,7 @@ class GameScene extends Phaser.Scene {
         if (manyheart == 0){
             this.scene.start('DeathScene')
             music.stop();
-            runSound.stop();
+            // runSound.stop();
         }
 
         //Key WS STOP
