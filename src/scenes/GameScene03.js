@@ -269,6 +269,18 @@ class GameScene03 extends Phaser.Scene {
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene04");
         });
+        //fruit vs block2
+        this.physics.add.overlap(block2,FruitGroup, (block2,fruit) => {
+            fruit.destroy();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+        });
         this.physics.add.collider(block5, monsterGroup, (block5, monster) => {
             manyheart--;
                         for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
