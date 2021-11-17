@@ -4,7 +4,9 @@ let bgRun01, block, block2, block3, block4, player, FruitGroup,
     FruitEvent, fruit, monster, monsterGroup, monsterSpawn,
     monster2Group, monster2Spawn, monster2,
     monster3Group, monster3Spawn, monster3,
-    Bulletmonster3Group, Bulletmonster3Spawn, Bulletmonster3;
+    Bulletmonster3Group, Bulletmonster3Spawn, Bulletmonster3,
+    rock, rockGroup, rockSpawn,
+    rock2, rock2Group, rock2Spawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 
@@ -23,7 +25,14 @@ class GameScene04 extends Phaser.Scene {
         this.load.image("block", "src/image/block2.png");
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
+
+        //--------------------------------------เสียง--------------------------------------//
         this.load.audio("song", "src/image/song/gamesong.mp3");
+        this.load.audio("run", "src/image/song/run.aiff");
+
+        //--------------------------------------หิน--------------------------------------//
+        this.load.image("rock", "src/image/หิน1.png");
+        this.load.image("rock2", "src/image/หิน2.png");
 
         //--------------------------------------มอนส้ม--------------------------------------//
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 178.75, frameHeight: 185 });
@@ -47,6 +56,10 @@ class GameScene04 extends Phaser.Scene {
         //--------------------------------------music--------------------------------------//
         music = this.sound.add("song").setVolume(0.1);
         music.play({ loop: true });
+
+        //runsound
+        runSound = this.sound.add("run").setVolume(0.25);
+        runSound.play({ loop: true });
 
         //--------------------------------------BackGround--------------------------------------//
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
@@ -95,6 +108,46 @@ class GameScene04 extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+
+        //--------------------------------------Spawn หิน1--------------------------------------//
+        rockGroup = this.physics.add.group();
+
+        rockSpawn = this.time.addEvent({
+            delay: 3000,
+            callback: function () {
+                rock = this.physics.add.image(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(300, 600), "rock")
+                    .setDepth(8)
+                    .setScale(0.25)
+                    .setSize(600, 400)
+                    .setOffset(50, 150)
+                    .setImmovable();
+                rockGroup.add(rock).setVelocityX(-600);
+            },
+            callbackScope: this,
+            loop: true,
+            // repeat: 5,
+            pause: false,
+        })
+
+        //--------------------------------------Spawn หิน2--------------------------------------//
+        rock2Group = this.physics.add.group();
+
+        rock2Spawn = this.time.addEvent({
+            delay: 8000,
+            callback: function () {
+                rock2 = this.physics.add.image(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(500, 750), "rock2")
+                    .setDepth(8)
+                    .setScale(0.25)
+                    .setSize(600, 400)
+                    .setOffset(50, 150)
+                    .setImmovable();
+                rock2Group.add(rock2).setVelocityX(-600);
+            },
+            callbackScope: this,
+            loop: true,
+            // repeat: 5,
+            pause: false,
+        })
 
         // //--------------------------------------create animation มอนส้ม--------------------------------------//
         // this.anims.create({
@@ -261,8 +314,8 @@ class GameScene04 extends Phaser.Scene {
                 monster3 = this.physics.add.sprite(1080, 500, 'monsterPurple')
                     .setDepth(8)
                     .setScale(3)
-                    .setSize(100,100)
-                    .setOffset(10,10);
+                    .setSize(100, 100)
+                    .setOffset(10, 10);
                 monster3Group.add(monster3)
                     .setVelocityX(0);
                 monster3.anims.play("monsterPurpleanim", true);
@@ -280,7 +333,7 @@ class GameScene04 extends Phaser.Scene {
         Bulletmonster3Spawn = this.time.addEvent({
             delay: 800,
             callback: function () {
-                Bulletmonster3 = this.physics.add.sprite(1100,Phaser.Math.Between(250, 650), 'monsterPurpleSkill')
+                Bulletmonster3 = this.physics.add.sprite(1100, Phaser.Math.Between(250, 650), 'monsterPurpleSkill')
                     .setDepth(7)
                     .setScale(1)
                     .setSize(0, 0)
@@ -312,12 +365,13 @@ class GameScene04 extends Phaser.Scene {
             music.stop();
             this.scene.start('WinScene')
         });
-        
+
         //--------------------------------------player Vs monster--------------------------------------//
         this.physics.add.collider(player, monster3Group, (player, monster3) => {
             this.scene.start('DeathScene')
+            runSound.stop();
         });
-        
+
         this.physics.add.collider(FruitGroup, Bulletmonster3Group, (fruit, Bulletmonster3) => {
             fruit.destroy();
             Bulletmonster3.destroy();
@@ -401,11 +455,22 @@ class GameScene04 extends Phaser.Scene {
             })
         });
 
+        //-------------------------------------ชนหินแล้วโดนบีบ--------------------------------------//
+        this.physics.add.collider(player, rockGroup, (player, rock) => {
+            rock.setVelocityX(-600);
+
+        })
+
+        this.physics.add.collider(player, rock2Group, (player, rock2) => {
+            rock2.setVelocityX(-600);
+
+        })
+
     }
 
 
     update() {
-        bgRun01.tilePositionX += 3;
+        bgRun01.tilePositionX += 7;
         player.anims.play("playerrun", true);
 
         //Key WS STOP

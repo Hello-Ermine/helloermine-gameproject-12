@@ -1,12 +1,12 @@
 import Phaser from "phaser";
 
-let mainbg,block,block2,block3,block4,
+let mainbg, block, block2, block3, block4,
     player,
-    FruitGroup,FruitEvent,fruit,
-    monster,monster1,monsterss,monsterGroup,monsterSpawn,monsterSpawns,
-    heartGroup,playerHeart;
+    FruitGroup, FruitEvent, fruit,
+    monster, monster1, monsterss, monsterGroup, monsterSpawn, monsterSpawns,
+    heartGroup, playerHeart;
 let keyA, keyD, keyW, keyS, keyQ;
-let music;
+let music, run, runSound;
 let home;
 
 class GameScene extends Phaser.Scene {
@@ -22,19 +22,31 @@ class GameScene extends Phaser.Scene {
         this.load.image("home", "src/image/home.png");
         this.load.image("block", "src/image/block2.png");
         this.load.image("fruit", "src/image/ninja-fruit.png");
-        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280,});
+        this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
+
+        //--------------------------------------เสียง--------------------------------------//
         this.load.audio("song", "src/image/song/gamesong.mp3");
-        this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", {frameWidth: 372,frameHeight: 293,});
-        this.load.spritesheet("monsterSheapDie", "src/image/แกะตุย.png", {frameWidth: 376,frameHeight: 293,});
-        this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", {frameWidth: 376,frameHeight: 293,});
-        this.load.spritesheet("monsterSheapAtk", "src/image/แกะตี2.png", {frameWidth: 500,frameHeight: 293,});
-        this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", {frameWidth: 405,frameHeight: 407,});
+        this.load.audio("run", "src/sound/run.mp3");
+
+
+        this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", { frameWidth: 372, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapDie", "src/image/แกะตุย.png", { frameWidth: 376, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", { frameWidth: 376, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapAtk", "src/image/แกะตี2.png", { frameWidth: 500, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", { frameWidth: 405, frameHeight: 407, });
+
+
     }
 
     create() {
         //music
-        music = this.sound.add("song").setVolume(0);
+        music = this.sound.add("song").setVolume(0.1);
         music.play({ loop: true });
+
+        //runsound
+        runSound = this.sound.add("run").setVolume(0.25);
+        runSound.play({ loop: true });
+
         //BackGround
         mainbg = this.add.tileSprite(0, 0, 1280, 720, "mainbg")
             .setDepth(0)
@@ -54,13 +66,13 @@ class GameScene extends Phaser.Scene {
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
-            .setSize(50, 720)
+            .setSize(10, 720)
             .setOffset(1250, 300);
         block3 = this.physics.add.image(-110, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
-            .setSize(50, 720)
+            .setSize(10, 720)
             .setOffset(1250, 300);
         // block4 = this.physics.add
         //     .image(-200, 20, "block")
@@ -106,7 +118,7 @@ class GameScene extends Phaser.Scene {
                 start: 2,
                 end: 6,
             }),
-            duration: 400,
+            duration: 100,
             framerate: 0,
         });
 
@@ -163,9 +175,9 @@ class GameScene extends Phaser.Scene {
         });
 
         monsterSpawn = this.time.addEvent({
-            delay: 1000,
+            delay: 2000,
             callback: function () {
-                monster = this.physics.add.sprite(Phaser.Math.Between(1200, 1280),Phaser.Math.Between(300, 700),"monsterSheap")
+                monster = this.physics.add.sprite(Phaser.Math.Between(1200, 1280), Phaser.Math.Between(300, 700), "monsterSheap")
                     .setDepth(8)
                     .setScale(0.4)
                     .setSize(100, 160)
@@ -202,6 +214,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(player, monsterGroup, (player, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
             this.scene.start('DeathScene')
+            runSound.stop();
             monster.setVelocityX(0);
 
             this.time.addEvent({
@@ -214,23 +227,27 @@ class GameScene extends Phaser.Scene {
             });
         });
 
-        this.physics.add.overlap(monsterGroup,block3,(monsterGroup, block3) => {
+        this.physics.add.overlap(monsterGroup, block3, (monsterGroup, block3) => {
             monster.anims.play("monsterSheapAtkanim", true);
-            monster.setVelocityX(-900);
-            }
+            // monster.setVelocityX(-900);
+        }
         );
 
-        this.physics.add.overlap(monsterGroup,block3,(monsterGroup, block3) => {
+        this.physics.add.overlap(monsterGroup, block3, (monsterGroup, block3) => {
             monster1.anims.play("monsterSheapAtkanim", true);
-            }
+        }
         );
+
+        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
+        //     monster.anims.play("monsterSheapanim", true);
+        // })
 
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterSheapDieanim", true);
             monster.setVelocityX(0);
             fruit.destroy();
             this.time.addEvent({
-                delay: 500,
+                delay: 100,
                 callback: function () {
                     monster.destroy();
                     // monster1.destroy();
@@ -239,18 +256,9 @@ class GameScene extends Phaser.Scene {
                 loop: false,
             });
         });
-
-        this.physics.add.overlap(
-            monsterGroup,
-            block2,
-            (monsterGroup, block2) => {
-                monster.destroy();
-            }
-        );
-
-        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
-        //     monster.anims.play("monsterSheapAtkanim", true);
-        // })
+        // this.physics.add.overlap(monsterGroup, block2, (monsterGroup, block2) => {
+        //         monster.destroy();
+        //     });
     }
 
     update(delta, time) {
@@ -260,18 +268,24 @@ class GameScene extends Phaser.Scene {
         //Key WS STOP
         if (keyS.isDown) {
             player.setVelocityY(500);
+
         } else if (keyW.isDown) {
             player.setVelocityY(-500);
+
         } else {
             player.setVelocityY(0);
+
         }
         //Key AD STOP
         if (keyA.isDown) {
             player.setVelocityX(-300);
+
         } else if (keyD.isDown) {
             player.setVelocityX(1000);
+
         } else {
             player.setVelocityX(0);
+
         }
 
         //KeyQ
@@ -292,6 +306,10 @@ class GameScene extends Phaser.Scene {
                 fruits.destroy();
             }
         }
+
+        // if (player.x > 1280) {
+        //     runSound.play({ loop: true });
+        // }
 
         // for (var i = 0; i < monsterGroup.getChildren().length; i++) {
         //     var monsterATK = monsterGroup.getChildren()[i];

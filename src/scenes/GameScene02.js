@@ -1,9 +1,9 @@
 import Phaser from "phaser";
 
-let bgRun01,block,block2,block3,block4,
+let bgRun01, block, block2, block3, block4,
     player,
-    FruitGroup,FruitEvent,fruit,monster,
-    monsterGroup,monsterSpawn;
+    FruitGroup, FruitEvent, fruit, monster,
+    monsterGroup, monsterSpawn;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 
@@ -20,18 +20,27 @@ class GameScene02 extends Phaser.Scene {
         this.load.image("home", "src/image/home.png");
         this.load.image("block", "src/image/block2.png");
         this.load.image("fruit", "src/image/ninja-fruit.png");
-        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280,});
+        this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
+
+        //--------------------------------------เสียง--------------------------------------//
         this.load.audio("song", "src/image/song/gamesong.mp3");
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 179,frameHeight: 193,});
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", {frameWidth: 205,frameHeight: 201,});
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", {frameWidth: 205,frameHeight: 201,});
-        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", {frameWidth: 179,frameHeight: 193,});
+        this.load.audio("run", "src/sound/run.mp3");
+
+        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193, });
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
+        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193, });
     }
 
     create() {
         //music
         music = this.sound.add("song").setVolume(0.1);
         music.play({ loop: true });
+
+        //runsound
+        runSound = this.sound.add("run").setVolume(0.25);
+        runSound.play({ loop: true });
+
         //BackGround
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
@@ -94,9 +103,9 @@ class GameScene02 extends Phaser.Scene {
             key: "monsterOrangeDieanim",
             frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
                 start: 0,
-                end: 6,
+                end: 7,
             }),
-            duration: 400,
+            duration: 100,
             framerate: 0,
         });
 
@@ -129,7 +138,7 @@ class GameScene02 extends Phaser.Scene {
         monsterSpawn = this.time.addEvent({
             delay: 1000,
             callback: function () {
-                monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280),Phaser.Math.Between(400, 600),"monsterOrange")
+                monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(400, 600), "monsterOrange")
                     .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
@@ -165,6 +174,7 @@ class GameScene02 extends Phaser.Scene {
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             monster.destroy();
             this.scene.start('DeathScene')
+            runSound.stop();
         });
 
         this.physics.add.overlap(
@@ -187,7 +197,7 @@ class GameScene02 extends Phaser.Scene {
 
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
-            monster.setVelocityX(1000);
+            monster.setVelocityX(0);
             fruit.destroy();
             this.time.addEvent({
                 delay: 200,
@@ -199,13 +209,13 @@ class GameScene02 extends Phaser.Scene {
             });
         });
 
-        this.physics.add.overlap(
-            monsterGroup,
-            block2,
-            (monsterGroup, block2) => {
-                monster.destroy();
-            }
-        );
+        // this.physics.add.overlap(
+        //     monsterGroup,
+        //     block2,
+        //     (monsterGroup, block2) => {
+        //         monster.destroy();
+        //     }
+        // );
     }
 
     update(delta, time) {
