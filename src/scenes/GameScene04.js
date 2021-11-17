@@ -7,8 +7,9 @@ let bgRun01, block, block2, block3, block4, player, FruitGroup,
     Bulletmonster3Group, Bulletmonster3Spawn, Bulletmonster3,
     rock, rockGroup, rockSpawn,
     rock2, rock2Group, rock2Spawn;
+let heartGroup, heart,manyheart = 8;
+let monheartGroup, monheart,manymonheart = 40;
 let keyA, keyD, keyW, keyS, keyQ;
-let music;
 
 class GameScene04 extends Phaser.Scene {
 
@@ -53,14 +54,6 @@ class GameScene04 extends Phaser.Scene {
     }
 
     create() {
-        //--------------------------------------music--------------------------------------//
-        music = this.sound.add("song").setVolume(0.1);
-        music.play({ loop: true });
-
-        //runsound
-        runSound = this.sound.add("run").setVolume(0.25);
-        runSound.play({ loop: true });
-
         //--------------------------------------BackGround--------------------------------------//
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
@@ -79,18 +72,13 @@ class GameScene04 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
-        block3 = this.physics.add.image(-110, 20, "block")
+        block3 = this.physics.add.image(-950, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
-        block4 = this.physics.add.image(-450, 20, "block")
-            .setDepth(100)
-            .setVisible(0)
-            .setImmovable()
-            .setSize(50, 720)
-            .setOffset(1250, 300);
+
 
         //--------------------------------------player--------------------------------------//
         player = this.physics.add.sprite(100, 450, "player")
@@ -108,6 +96,15 @@ class GameScene04 extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+        //heart
+        heartGroup = this.physics.add.group();
+
+        for (let i = 0; i < manyheart ; i++) {
+            heart = this.physics.add.image(50 + i*80,670, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            heartGroup.add(heart);
+        }
 
         //--------------------------------------Spawn หิน1--------------------------------------//
         rockGroup = this.physics.add.group();
@@ -148,119 +145,6 @@ class GameScene04 extends Phaser.Scene {
             // repeat: 5,
             pause: false,
         })
-
-        // //--------------------------------------create animation มอนส้ม--------------------------------------//
-        // this.anims.create({
-        //     key: "monsterOrangeanim",
-        //     frames: this.anims.generateFrameNumbers("monsterOrange", {
-        //         start: 0,
-        //         end: 3,
-        //     }),
-        //     duration: 350,
-        //     framerate: 0,
-        //     repeat: -1,
-        // });
-
-        // this.anims.create({
-        //     key: "monsterOrangeDieanim",
-        //     frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
-        //         start: 0,
-        //         end: 6,
-        //     }),
-        //     duration: 400,
-        //     framerate: 0,
-        // });
-
-        // this.anims.create({
-        //     key: "monsterOrangeAtkanim",
-        //     frames: this.anims.generateFrameNumbers("monsterOrangeAtk", {
-        //         start: 0,
-        //         end: 3,
-
-        //     }),
-        //     duration: 400,
-        //     framerate: 0,
-        //     loop: true,
-        //     pause: false,
-        // });
-
-        // //--------------------------------------Spawn มอนส้ม--------------------------------------//
-        // monsterGroup = this.physics.add.group();
-
-        // monsterSpawn = this.time.addEvent({
-        //     delay: 2000,
-        //     callback: function () {
-        //         monster = this.physics.add
-        //             .sprite(Phaser.Math.Between(1000, 1280),
-        //                 Phaser.Math.Between(400, 600), 'monsterOrange')
-        //             .setDepth(8)
-        //             .setScale(0.7)
-        //             .setSize(100, 160)
-        //             .setOffset(50, 10);
-        //         monsterGroup.add(monster)
-        //             .setVelocityX(-600);
-        //         monster.anims.play("monsterOrangeanim", true);
-        //         monster.flipX = true;
-        //     },
-        //     callbackScope: this,
-        //     loop: true,
-        //     pause: false
-        // });
-
-        // //--------------------------------------create animation มอนชมพู--------------------------------------//
-        // this.anims.create({
-        //     key: "monsterPinkanim",
-        //     frames: this.anims.generateFrameNumbers("monsterPink", {
-        //         start: 1,
-        //         end: 4,
-        //     }),
-        //     duration: 400,
-        //     framerate: 5,
-        //     repeat: -1,
-        // });
-
-        // this.anims.create({
-        //     key: "monsterPinkDieanim",
-        //     frames: this.anims.generateFrameNumbers("monsterPinkDie", {
-        //         start: 0,
-        //         end: 7,
-        //     }),
-        //     duration: 400,
-        //     framerate: 0,
-        // });
-
-        // this.anims.create({
-        //     key: "monsterPinkAtkanim",
-        //     frames: this.anims.generateFrameNumbers("monsterPinkAtk", {
-        //         start: 0,
-        //         end: 5,
-        //     }),
-        //     duration: 400,
-        //     framerate: 0,
-        // });
-
-        // //--------------------------------------Spawn มอนชมพู--------------------------------------//
-        // monster2Group = this.physics.add.group();
-
-        // monster2Spawn = this.time.addEvent({
-        //     delay: 3000,
-        //     callback: function () {
-        //         monster2 = this.physics.add
-        //             .sprite(Phaser.Math.Between(1000, 1280),
-        //                 Phaser.Math.Between(450, 650), 'monsterPink')
-        //             .setDepth(8)
-        //             .setScale(0.7)
-        //             .setSize(100, 160)
-        //             .setOffset(50, 10);
-        //         monster2Group.add(monster2)
-        //             .setVelocityX(-600);
-        //         monster2.anims.play("monsterPinkanim", true);
-        //         monster2.flipX = true;
-        //     },
-        //     callbackScope: this,
-        //     loop: true,
-        //     pause: false
-        // });
 
         //--------------------------------------create animation มอนม่วง--------------------------------------//
         this.anims.create({
@@ -327,11 +211,20 @@ class GameScene04 extends Phaser.Scene {
             pause: false
         });
 
+        //monheart
+        monheartGroup = this.physics.add.group();
+        for (let i = 0; i < manymonheart ; i++) {
+            monheart = this.physics.add.image(50 + i*30,100, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            monheartGroup.add(monheart);
+        }
+
         //--------------------------------------Spawn bullet มอนม่วง--------------------------------------//
         Bulletmonster3Group = this.physics.add.group();
 
         Bulletmonster3Spawn = this.time.addEvent({
-            delay: 800,
+            delay: 600,
             callback: function () {
                 Bulletmonster3 = this.physics.add.sprite(1100, Phaser.Math.Between(250, 650), 'monsterPurpleSkill')
                     .setDepth(7)
@@ -362,14 +255,35 @@ class GameScene04 extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            music.stop();
             this.scene.start('WinScene')
+        });
+        this.physics.add.collider(block3, Bulletmonster3Group, (block3, Bulletmonster3) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            Bulletmonster3.destroy();
         });
 
         //--------------------------------------player Vs monster--------------------------------------//
         this.physics.add.collider(player, monster3Group, (player, monster3) => {
             this.scene.start('DeathScene')
-            runSound.stop();
+        });
+
+        this.physics.add.collider(player, Bulletmonster3Group, (player, Bulletmonster3) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            Bulletmonster3.destroy();
         });
 
         this.physics.add.collider(FruitGroup, Bulletmonster3Group, (fruit, Bulletmonster3) => {
@@ -377,72 +291,17 @@ class GameScene04 extends Phaser.Scene {
             Bulletmonster3.destroy();
         });
 
-
-        // //------------------------------ตัวส้มโจมตี------------------------------//
-        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
-        //     monster.anims.play("monsterOrangeAtkanim", true);
-        //     monster.setVelocityX(-1000);
-        // })
-
-        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
-        //     monster.anims.play("monsterOrangeanim", true);
-        //     // monster.setVelocityX(-600);
-        // })
-
-        // //--------------------------------------fruit Vs มอนส้ม(ตาย)--------------------------------------//
-        // this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
-        //     monster.anims.play("monsterOrangeDieanim", true);
-        //     monster.setVelocityX(1000);
-        //     fruit.destroy();
-        //     this.time.addEvent({
-        //         delay: 500,
-        //         callback: function () {
-        //             monster.destroy();
-        //         },
-        //         callbackScope: this,
-        //         loop: false
-        //     })
-        // });
-
-        // //--------------------------------------ทำลายมอนส้ม--------------------------------------//
-        // this.physics.add.overlap(monsterGroup, block2, (monsterGroup, block2) => {
-        //     monster.destroy();
-        // });
-
-        // //------------------------------ตัวชมพูโจมตี------------------------------//
-        // this.physics.add.overlap(monster2Group, block4, (monster2Group, block4) => {
-        //     monster2.anims.play("monsterPinkAtkanim", true);
-        //     monster2.setVelocityX(-900);
-        // })
-
-        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
-        //     monster2.anims.play("monsterPinkanim", true);
-        //     // monster.setVelocityX(-600);
-        // })
-
-        // //--------------------------------------fruit Vs มอนชมพู(ตาย)--------------------------------------//
-        // this.physics.add.overlap(FruitGroup, monster2Group, (fruit, monster2) => {
-        //     monster2.anims.play("monsterPinkDieanim", true);
-        //     monster2.setVelocityX(1000);
-        //     fruit.destroy();
-        //     this.time.addEvent({
-        //         delay: 500,
-        //         callback: function () {
-        //             monster2.destroy();
-        //         },
-        //         callbackScope: this,
-        //         loop: false
-        //     })
-        // });
-
-        // //--------------------------------------ทำลายมอนชมพู--------------------------------------//
-        // this.physics.add.overlap(monster2Group, block2, (monster2Group, block2) => {
-        //     monster2.destroy();
-        // });
-
         //--------------------------------------fruit Vs มอนม่วง(เจ็บ)--------------------------------------//
         this.physics.add.overlap(FruitGroup, monster3Group, (fruit, monster3) => {
             monster3.anims.play("monsterPurpleHurtanim", true);
+            manymonheart--;
+                        for (let i = monheartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manymonheart < i + 1) {
+                                monheartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                monheartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
             monster3.setVelocityX(0);
             fruit.destroy();
             this.time.addEvent({
@@ -472,6 +331,12 @@ class GameScene04 extends Phaser.Scene {
     update() {
         bgRun01.tilePositionX += 7;
         player.anims.play("playerrun", true);
+        if (manyheart == 0){
+            this.scene.start('DeathScene')
+        }
+        if (manymonheart == 0){
+            this.scene.start('WinScene')
+        }
 
         //Key WS STOP
         if (keyS.isDown) { player.setVelocityY(500); }
@@ -479,7 +344,7 @@ class GameScene04 extends Phaser.Scene {
         else { player.setVelocityY(0); }
         //Key AD STOP
         if (keyA.isDown) { player.setVelocityX(-300); }
-        else if (keyD.isDown) { player.setVelocityX(300); }
+        else if (keyD.isDown) { player.setVelocityX(1500); }
         else { player.setVelocityX(0); }
 
         //KeyQ

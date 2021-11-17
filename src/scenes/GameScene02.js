@@ -4,6 +4,7 @@ let bgRun01, block, block2, block3, block4,
     player,
     FruitGroup, FruitEvent, fruit, monster,
     monsterGroup, monsterSpawn;
+let heartGroup, heart,manyheart = 5;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
 
@@ -23,7 +24,6 @@ class GameScene02 extends Phaser.Scene {
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
 
         //--------------------------------------เสียง--------------------------------------//
-        this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.audio("run", "src/sound/run.mp3");
 
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193, });
@@ -33,14 +33,6 @@ class GameScene02 extends Phaser.Scene {
     }
 
     create() {
-        //music
-        music = this.sound.add("song").setVolume(0.1);
-        music.play({ loop: true });
-
-        //runsound
-        runSound = this.sound.add("run").setVolume(0.25);
-        runSound.play({ loop: true });
-
         //BackGround
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
@@ -86,6 +78,15 @@ class GameScene02 extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+        //heart
+        heartGroup = this.physics.add.group();
+
+        for (let i = 0; i < manyheart ; i++) {
+            heart = this.physics.add.image(50 + i*80,670, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            heartGroup.add(heart);
+        }
 
         //Enemy set
         this.anims.create({
@@ -167,14 +168,19 @@ class GameScene02 extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            music.stop();
             this.scene.start("GameScene03");
         });
         //Vs monster
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
             monster.destroy();
-            this.scene.start('DeathScene')
-            runSound.stop();
         });
 
         this.physics.add.overlap(
@@ -221,6 +227,9 @@ class GameScene02 extends Phaser.Scene {
     update(delta, time) {
         bgRun01.tilePositionX += 2;
         player.anims.play("playerrun", true);
+        if (manyheart == 0){
+            this.scene.start('DeathScene')
+        }
 
         //Key WS STOP
         if (keyS.isDown) {

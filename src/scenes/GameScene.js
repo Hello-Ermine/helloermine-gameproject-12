@@ -1,10 +1,10 @@
 import Phaser from "phaser";
 
-let mainbg, block, block2, block3, block4,
+let mainbg, block, block2, block3,
     player,
-    FruitGroup, FruitEvent, fruit,
-    monster, monster1, monsterss, monsterGroup, monsterSpawn, monsterSpawns,
-    heartGroup, playerHeart;
+    FruitGroup, fruit,
+    monster, monster1, monsterGroup, monsterSpawn, monsterSpawns,
+    heartGroup, heart,manyheart = 5;
 let keyA, keyD, keyW, keyS, keyQ;
 let music, run, runSound;
 let home;
@@ -17,15 +17,16 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("mainbg", "src/image/bgmorning.png");
+        this.load.image("mainbg", "src/image/bgnight01.png");
         this.load.image("bgRun01", "src/image/bgnight02.png");
         this.load.image("home", "src/image/home.png");
         this.load.image("block", "src/image/block2.png");
+        this.load.image("heart", "src/image/heart.png");
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
 
         //--------------------------------------เสียง--------------------------------------//
-        this.load.audio("song", "src/image/song/gamesong.mp3");
+        this.load.audio("song", "src/image/song/gamesong.wav");
         this.load.audio("run", "src/sound/run.mp3");
 
 
@@ -40,12 +41,12 @@ class GameScene extends Phaser.Scene {
 
     create() {
         //music
-        music = this.sound.add("song").setVolume(0.1);
+        music = this.sound.add("song").setVolume(0.2);
         music.play({ loop: true });
 
         //runsound
-        runSound = this.sound.add("run").setVolume(0.25);
-        runSound.play({ loop: true });
+        // runSound = this.sound.add("run").setVolume(0.25);
+        // runSound.play({ loop: true });
 
         //BackGround
         mainbg = this.add.tileSprite(0, 0, 1280, 720, "mainbg")
@@ -74,13 +75,6 @@ class GameScene extends Phaser.Scene {
             .setImmovable()
             .setSize(10, 720)
             .setOffset(1250, 300);
-        // block4 = this.physics.add
-        //     .image(-200, 20, "block")
-        //     .setDepth(100)
-        //     .setVisible(0)
-        //     .setImmovable()
-        //     .setSize(50, 720)
-        //     .setOffset(1250, 300);
 
         //Player
         player = this.physics.add.sprite(400, 600, "player")
@@ -98,6 +92,15 @@ class GameScene extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+        //heart
+        heartGroup = this.physics.add.group();
+
+        for (let i = 0; i < manyheart ; i++) {
+            heart = this.physics.add.image(50 + i*80,670, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            heartGroup.add(heart);
+        }
 
         //Enemy set
         this.anims.create({
@@ -152,8 +155,6 @@ class GameScene extends Phaser.Scene {
             }),
             duration: 600,
             framerate: 0,
-            // loop: true,
-            // pause: false,
         });
 
         monsterGroup = this.physics.add.group();
@@ -207,15 +208,36 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene02");
-            music.stop();
         });
+
+        //fruit vs block2
+        this.physics.add.overlap(block2,FruitGroup, (block2,fruit) => {
+            fruit.destroy();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+        });
+
         this.physics.add.collider(player, home);
         //Vs monster
         this.physics.add.overlap(player, monsterGroup, (player, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
-            this.scene.start('DeathScene')
-            runSound.stop();
+            
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
             monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
 
             this.time.addEvent({
                 delay: 500,
@@ -238,9 +260,6 @@ class GameScene extends Phaser.Scene {
         }
         );
 
-        // this.physics.add.overlap(monsterGroup, block4, (monsterGroup, block4) => {
-        //     monster.anims.play("monsterSheapanim", true);
-        // })
 
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterSheapDieanim", true);
@@ -256,14 +275,16 @@ class GameScene extends Phaser.Scene {
                 loop: false,
             });
         });
-        // this.physics.add.overlap(monsterGroup, block2, (monsterGroup, block2) => {
-        //         monster.destroy();
-        //     });
     }
 
     update(delta, time) {
         mainbg.tilePositionX += 0;
         player.anims.play("playerrun", true);
+        if (manyheart == 0){
+            this.scene.start('DeathScene')
+            music.stop();
+            runSound.stop();
+        }
 
         //Key WS STOP
         if (keyS.isDown) {
@@ -306,26 +327,6 @@ class GameScene extends Phaser.Scene {
                 fruits.destroy();
             }
         }
-
-        // if (player.x > 1280) {
-        //     runSound.play({ loop: true });
-        // }
-
-        // for (var i = 0; i < monsterGroup.getChildren().length; i++) {
-        //     var monsterATK = monsterGroup.getChildren()[i];
-
-        //     if (monsterATK.x < 950) {
-        //         monsterATK.anims.play("monsterSheapAtkanim", true);
-        //     }
-        // }
-
-        // for (var i = 0; i < monsterGroup.getChildren().length; i++) {
-        //     var monsterSkills = monsterGroup.getChildren()[i];
-
-        //     if (monsterSkills.x < 600) {
-        //         monsterSkills.anims.play("monsterSheapSkillanim", true);
-        //     }
-        // }
     }
 }
 export default GameScene;

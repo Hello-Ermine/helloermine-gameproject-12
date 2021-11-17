@@ -7,8 +7,8 @@ let bgRun01, block, block2, block3, block4,
     monster2Group, monster2Spawn, monster2,
     rock, rockGroup, rockSpawn,
     rock2, rock2Group, rock2Spawn;
+let heartGroup, heart,manyheart = 5;
 let keyA, keyD, keyW, keyS, keyQ;
-let music;
 
 class GameScene03 extends Phaser.Scene {
     constructor(test) {
@@ -25,7 +25,6 @@ class GameScene03 extends Phaser.Scene {
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
 
         //--------------------------------------เสียง--------------------------------------//
-        this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.audio("run", "src/sound/run.mp3");
 
         //--------------------------------------หิน--------------------------------------//
@@ -44,14 +43,6 @@ class GameScene03 extends Phaser.Scene {
     }
 
     create() {
-        //--------------------------------------music--------------------------------------//
-        music = this.sound.add("song").setVolume(0.1);
-        music.play({ loop: true });
-
-        //runsound
-        runSound = this.sound.add("run").setVolume(0.25);
-        runSound.play({ loop: true });
-
         //--------------------------------------BackGround--------------------------------------//
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
@@ -99,6 +90,15 @@ class GameScene03 extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+        //heart
+        heartGroup = this.physics.add.group();
+
+        for (let i = 0; i < manyheart ; i++) {
+            heart = this.physics.add.image(50 + i*80,670, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            heartGroup.add(heart);
+        }
 
         //--------------------------------------create animation มอนส้ม--------------------------------------//
         this.anims.create({
@@ -261,7 +261,6 @@ class GameScene03 extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            music.stop();
             this.scene.start("GameScene04");
         });
 
@@ -327,14 +326,28 @@ class GameScene03 extends Phaser.Scene {
             }
         );
 
-        //--------------------------------------player Vs monster--------------------------------------//
+        //--------------------------------------player Vs monsterOrange --------------------------------//
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
-            this.scene.start('DeathScene')
-            runSound.stop();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster.destroy();
         });
         this.physics.add.collider(player, monster2Group, (player, monster2) => {
-            this.scene.start('DeathScene')
-            runSound.stop();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster2.destroy();
         });
 
         //--------------------------------------fruit Vs มอนชมพู(ตาย)--------------------------------------//
@@ -380,6 +393,9 @@ class GameScene03 extends Phaser.Scene {
     update(delta, time) {
         bgRun01.tilePositionX += 7;
         player.anims.play("playerrunLv2", true);
+        if (manyheart == 0){
+            this.scene.start('DeathScene')
+        }
 
         //Key WS STOP
         if (keyS.isDown) {

@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 let buttonPlay;
 let bg,logo;
-let mainmusic;
+let menutheme;
 
 class MainMenu extends Phaser.Scene {
     constructor(test) {
@@ -15,11 +15,14 @@ class MainMenu extends Phaser.Scene {
         this.load.image("menubg", "src/image/bgnight02.png");
         this.load.image('play', 'src/image/bottom/play.png');
         this.load.image('logo', 'src/image/bottom/logo.png');
-        this.load.audio('mainmusic', 'src/image/song/mainsong.mp3');
+
+        //Sound
+        this.load.audio('menutheme', 'src/image/song/mainsong.mp3');
     }
 
     create() {
-        //mainmusic = this.sound.add('mainmusic').play();
+        menutheme = this.sound.add('menutheme').setVolume(0.8);
+        menutheme.play({loop: true});
 
         //mainBG
         bg = this.add.tileSprite(0, 0, 1280, 720, 'menubg')
@@ -28,18 +31,18 @@ class MainMenu extends Phaser.Scene {
             .setScale(0.1);
 
         //Button
-        buttonPlay = this.add.image(640, 340, 'play')
-        .setScale(0.35);
+        buttonPlay = this.add.image(640, 340, 'play').setScale(0.35);
         buttonPlay.setInteractive();
         buttonPlay.on('pointerup', () => {
-            this.scene.start('GameScene')
+            this.scene.start('GameScene');
+            menutheme.stop();
         })
 
 
     }
 
     update(delta, time) {
-        bg.tilePositionX += 0.7;
+        bg.tilePositionX += 0.8;
     }
 }
 export default MainMenu;
