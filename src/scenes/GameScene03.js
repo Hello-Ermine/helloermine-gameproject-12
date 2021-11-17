@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-let bgRun01, block, block2, block3, block4,
+let bgRun01, block, block2, block3, block4, block5,
     player,
     FruitGroup, FruitEvent, fruit,
     monster, monsterGroup, monsterSpawn,
@@ -68,6 +68,12 @@ class GameScene03 extends Phaser.Scene {
             .setSize(50, 720)
             .setOffset(1250, 300);
         block4 = this.physics.add.image(-450, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
+        block5 = this.physics.add.image(-950, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -263,6 +269,28 @@ class GameScene03 extends Phaser.Scene {
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene04");
         });
+        this.physics.add.collider(block5, monsterGroup, (block5, monster) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster.destroy();
+        });
+        this.physics.add.collider(block5, monster2Group, (block5, monster2) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster2.destroy();
+        });
 
         //------------------------------ตัวส้มโจมตี------------------------------//
         this.physics.add.overlap(
@@ -379,15 +407,6 @@ class GameScene03 extends Phaser.Scene {
             rock2.setVelocityX(-600);
 
         })
-
-        //--------------------------------------ทำลายมอนชมพู--------------------------------------//
-        // this.physics.add.overlap(
-        //     monster2Group,
-        //     block2,
-        //     (monster2Group, block2) => {
-        //         monster2.destroy();
-        //     }
-        // );
     }
 
     update(delta, time) {

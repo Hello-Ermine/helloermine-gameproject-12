@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 
-let bgRun01, block, block2, block3, block4,
+let bgRun01, block, block2, block3, block4, block5,
     player,
     FruitGroup, FruitEvent, fruit, monster,
     monsterGroup, monsterSpawn;
@@ -27,7 +27,6 @@ class GameScene02 extends Phaser.Scene {
         this.load.audio("run", "src/sound/run.mp3");
 
         this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193, });
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
         this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
         this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193, });
     }
@@ -56,6 +55,12 @@ class GameScene02 extends Phaser.Scene {
             .setSize(50, 720)
             .setOffset(1250, 300);
         block4 = this.physics.add.image(-450, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
+        block5 = this.physics.add.image(-950, 20, "block")
             .setDepth(100)
             .setVisible(0)
             .setImmovable()
@@ -170,6 +175,18 @@ class GameScene02 extends Phaser.Scene {
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene03");
         });
+        this.physics.add.collider(block5, monsterGroup, (block5, monster) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster.destroy();
+        });
+
         //Vs monster
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
             manyheart--;
@@ -215,14 +232,6 @@ class GameScene02 extends Phaser.Scene {
                 loop: false,
             });
         });
-
-        // this.physics.add.overlap(
-        //     monsterGroup,
-        //     block2,
-        //     (monsterGroup, block2) => {
-        //         monster.destroy();
-        //     }
-        // );
     }
 
     update(delta, time) {
