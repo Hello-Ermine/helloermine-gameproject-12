@@ -87,12 +87,12 @@ class GameScene03 extends Phaser.Scene {
             .setSize(100, 100)
             .setOffset(50, 100);
         this.anims.create({
-            key: "playerrunLv2",
+            key: "playerrunLv3",
             frames: this.anims.generateFrameNumbers("player", {
                 start: 0,
                 end: 9,
             }),
-            duration: 700,
+            duration: 500,
             framerate: 0,
             repeat: -1,
         });
@@ -338,15 +338,6 @@ class GameScene03 extends Phaser.Scene {
             });
         });
 
-        //--------------------------------------ทำลายมอนส้ม--------------------------------------//
-        // this.physics.add.overlap(
-        //     monsterGroup,
-        //     block2,
-        //     (monsterGroup, block2) => {
-        //         monster.destroy();
-        //     }
-        // );
-
         //------------------------------ตัวชมพูโจมตี------------------------------//
         this.physics.add.overlap(
             monster2Group,
@@ -422,8 +413,8 @@ class GameScene03 extends Phaser.Scene {
     }
 
     update(delta, time) {
-        bgRun01.tilePositionX += 7;
-        player.anims.play("playerrunLv2", true);
+        bgRun01.tilePositionX += 5;
+        player.anims.play("playerrunLv3", true);
         if (manyheart == 0){
             this.scene.start('DeathScene')
         }

@@ -87,12 +87,12 @@ class GameScene04 extends Phaser.Scene {
             .setSize(100, 100)
             .setOffset(50, 100);
         this.anims.create({
-            key: "playerrunLv2",
+            key: "playerrunlv4",
             frames: this.anims.generateFrameNumbers("player", {
                 start: 0,
                 end: 9,
             }),
-            duration: 700,
+            duration: 300,
             framerate: 0,
             repeat: -1,
         });
@@ -224,7 +224,7 @@ class GameScene04 extends Phaser.Scene {
         Bulletmonster3Group = this.physics.add.group();
 
         Bulletmonster3Spawn = this.time.addEvent({
-            delay: 600,
+            delay: 250,
             callback: function () {
                 Bulletmonster3 = this.physics.add.sprite(1100, Phaser.Math.Between(250, 650), 'monsterPurpleSkill')
                     .setDepth(7)
@@ -232,7 +232,7 @@ class GameScene04 extends Phaser.Scene {
                     .setSize(0, 0)
                     .setOffset(0, 0);
                 Bulletmonster3Group.add(Bulletmonster3)
-                    .setVelocityX(-400);
+                    .setVelocityX(-700);
                 Bulletmonster3.anims.play("monsterPurpleSkillanim", true);
                 Bulletmonster3.flipX = true;
             },
@@ -254,8 +254,17 @@ class GameScene04 extends Phaser.Scene {
         //--------------------------------------wallblock--------------------------------------//
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
-        this.physics.add.collider(player, block2, (player, block2) => {
-            this.scene.start('WinScene')
+        //fruit vs block2
+        this.physics.add.overlap(block2,FruitGroup, (block2,fruit) => {
+            fruit.destroy();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
         });
         this.physics.add.collider(block3, Bulletmonster3Group, (block3, Bulletmonster3) => {
             manyheart--;
@@ -330,7 +339,7 @@ class GameScene04 extends Phaser.Scene {
 
     update() {
         bgRun01.tilePositionX += 7;
-        player.anims.play("playerrun", true);
+        player.anims.play("playerrunlv4", true);
         if (manyheart == 0){
             this.scene.start('DeathScene')
         }
@@ -339,27 +348,26 @@ class GameScene04 extends Phaser.Scene {
         }
 
         //Key WS STOP
-        if (keyS.isDown) { player.setVelocityY(500); }
-        else if (keyW.isDown) { player.setVelocityY(-500); }
+        if (keyS.isDown) { player.setVelocityY(700); }
+        else if (keyW.isDown) { player.setVelocityY(-700); }
         else { player.setVelocityY(0); }
         //Key AD STOP
-        if (keyA.isDown) { player.setVelocityX(-300); }
-        else if (keyD.isDown) { player.setVelocityX(1500); }
+        if (keyA.isDown) { player.setVelocityX(-400); }
+        else if (keyD.isDown) { player.setVelocityX(300); }
         else { player.setVelocityX(0); }
 
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
             fruit = this.physics.add.image(player.x, player.y, 'fruit')
-                .setScale(0.1)
-            // fruit.rotation += 1;
+                .setScale(0.15)
             FruitGroup.add(fruit)
-            FruitGroup.setVelocityX(800)
+            FruitGroup.setVelocityX(1200)
         }
 
         //--------------------------------------Rotate fruits--------------------------------------//
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {
             var fruits = FruitGroup.getChildren()[i];
-            fruits.rotation += 0.2;
+            fruits.rotation += 0.05;
 
             if (fruits.x > 1280) {
                 fruits.destroy();

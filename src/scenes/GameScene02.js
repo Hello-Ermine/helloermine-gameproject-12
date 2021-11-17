@@ -248,7 +248,7 @@ class GameScene02 extends Phaser.Scene {
     }
 
     update(delta, time) {
-        bgRun01.tilePositionX += 2;
+        bgRun01.tilePositionX += 3;
         player.anims.play("playerrun", true);
         if (manyheart == 0){
             this.scene.start('DeathScene')
