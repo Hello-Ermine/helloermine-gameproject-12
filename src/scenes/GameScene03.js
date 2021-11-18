@@ -122,9 +122,9 @@ class GameScene03 extends Phaser.Scene {
             key: "monsterOrangeDieanim",
             frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
                 start: 0,
-                end: 6,
+                end: 7,
             }),
-            duration: 100,
+            duration: 800,
             framerate: 0,
         });
 
@@ -146,16 +146,16 @@ class GameScene03 extends Phaser.Scene {
         rockSpawn = this.time.addEvent({
             delay: 3000,
             callback: function () {
-                rock = this.physics.add.image(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(300, 600), "rock")
+                rock = this.physics.add.image(Phaser.Math.Between(1300, 1400), Phaser.Math.Between(250, 650), "rock")
                     .setDepth(8)
                     .setScale(0.25)
                     .setSize(600, 400)
                     .setOffset(50, 150);
-                rockGroup.add(rock).setVelocityX(-600);
+                rockGroup.add(rock).setVelocityX(-400);
             },
             callbackScope: this,
             loop: false,
-            repeat: 5,
+            repeat: 8,
             pause: false,
         })
 
@@ -163,14 +163,14 @@ class GameScene03 extends Phaser.Scene {
         rock2Group = this.physics.add.group();
 
         rock2Spawn = this.time.addEvent({
-            delay: 8000,
+            delay: 6000,
             callback: function () {
-                rock2 = this.physics.add.image(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(500, 750), "rock2")
+                rock2 = this.physics.add.image(Phaser.Math.Between(1300, 1500), Phaser.Math.Between(250, 600), "rock2")
                     .setDepth(8)
                     .setScale(0.25)
                     .setSize(600, 400)
                     .setOffset(50, 150);
-                rock2Group.add(rock2).setVelocityX(-600);
+                rock2Group.add(rock2).setVelocityX(-400);
             },
             callbackScope: this,
             loop: false,
@@ -183,9 +183,9 @@ class GameScene03 extends Phaser.Scene {
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 3000,
+            delay: 600,
             callback: function () {
-                monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(400, 600), "monsterOrange")
+                monster = this.physics.add.sprite(Phaser.Math.Between(1300, 1400), Phaser.Math.Between(250, 680), "monsterOrange")
                     .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
@@ -196,7 +196,7 @@ class GameScene03 extends Phaser.Scene {
             },
             callbackScope: this,
             loop: false,
-            repeat: 10,
+            repeat: 20,
             pause: false,
         });
 
@@ -218,7 +218,7 @@ class GameScene03 extends Phaser.Scene {
                 start: 0,
                 end: 7,
             }),
-            duration: 100,
+            duration: 800,
             framerate: 0,
         });
 
@@ -236,11 +236,11 @@ class GameScene03 extends Phaser.Scene {
         monster2Group = this.physics.add.group();
 
         monster2Spawn = this.time.addEvent({
-            delay: 2000,
+            delay: 1200,
             callback: function () {
-                monster2 = this.physics.add.sprite(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(450, 650), "monsterPink")
+                monster2 = this.physics.add.sprite(Phaser.Math.Between(1300, 1280), Phaser.Math.Between(250, 680), "monsterPink")
                     .setDepth(8)
-                    .setScale(0.7)
+                    .setScale(0.8)
                     .setSize(100, 160)
                     .setOffset(50, 10);
                 monster2Group.add(monster2).setVelocityX(-600);
@@ -249,7 +249,7 @@ class GameScene03 extends Phaser.Scene {
             },
             callbackScope: this,
             loop: false,
-            repeat: 10,
+            repeat: 20,
             pause: false,
         });
 
@@ -327,9 +327,10 @@ class GameScene03 extends Phaser.Scene {
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
             monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
             fruit.destroy();
             this.time.addEvent({
-                delay: 200,
+                delay: 600,
                 callback: function () {
                     monster.destroy();
                 },
@@ -388,9 +389,10 @@ class GameScene03 extends Phaser.Scene {
             (fruit, monster2) => {
                 monster2.anims.play("monsterPinkDieanim", true);
                 monster2.setVelocityX(0);
+                monster2.setOffset(-2000,5000);
                 fruit.destroy();
                 this.time.addEvent({
-                    delay: 200,
+                    delay: 600,
                     callback: function () {
                         monster2.destroy();
                     },

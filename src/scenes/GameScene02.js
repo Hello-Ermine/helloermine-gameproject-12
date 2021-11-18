@@ -142,20 +142,20 @@ class GameScene02 extends Phaser.Scene {
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 500,
+            delay: 700,
             callback: function () {
-                monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280), Phaser.Math.Between(400, 600), "monsterOrange")
+                monster = this.physics.add.sprite(Phaser.Math.Between(1300, 1280), Phaser.Math.Between(250, 680), "monsterOrange")
                     .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
                     .setOffset(50, 10);
-                monsterGroup.add(monster).setVelocityX(-600);
+                monsterGroup.add(monster).setVelocityX(-500);
                 monster.anims.play("monsterOrangeanim", true);
                 monster.flipX = true;
             },
             callbackScope: this,
             loop: false,
-            repeat: 10,
+            repeat: 25,
             pause: false,
         });
 
@@ -237,7 +237,7 @@ class GameScene02 extends Phaser.Scene {
             monster.setOffset(-2000,5000);
             fruit.destroy();
             this.time.addEvent({
-                delay: 800,
+                delay: 600,
                 callback: function () {
                     monster.destroy();
                 },
