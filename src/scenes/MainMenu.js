@@ -2,7 +2,7 @@ import Phaser from "phaser";
 
 let buttonPlay,tutorial,credit;
 let bg,logo;
-let menutheme;
+let menutheme,select;
 
 class MainMenu extends Phaser.Scene {
     constructor(test) {
@@ -21,11 +21,14 @@ class MainMenu extends Phaser.Scene {
 
         //Sound
         this.load.audio('menutheme', 'src/image/song/mainsong.mp3');
+        this.load.audio('selectMenu', 'src/sound/select.mp3');
     }
 
     create() {
-        menutheme = this.sound.add('menutheme').setVolume(0.8);
+        menutheme = this.sound.add('menutheme').setVolume(0.5);
         menutheme.play({loop: true});
+
+        select = this.sound.add('selectMenu').setVolume(0.5);
 
         //mainBG
         bg = this.add.tileSprite(0, 0, 1280, 720, 'menubg')
@@ -42,6 +45,7 @@ class MainMenu extends Phaser.Scene {
         })
         buttonPlay.on('pointerover', () => {
             buttonPlay.setScale(0.5);
+            select.play();
         })
         buttonPlay.on('pointerout', () => {
             buttonPlay.setScale(0.4);
@@ -51,11 +55,12 @@ class MainMenu extends Phaser.Scene {
         tutorial = this.add.image(640, 550, 'tutorial').setScale(0.4);
         tutorial.setInteractive();
         tutorial.on('pointerup', () => {
-            this.scene.start('GameScene');
+            this.scene.start('tutorial');
             menutheme.stop();
         })
         tutorial.on('pointerover', () => {
             tutorial.setScale(0.5);
+            select.play();
         })
         tutorial.on('pointerout', () => {
             tutorial.setScale(0.4);
@@ -70,6 +75,7 @@ class MainMenu extends Phaser.Scene {
         })
         credit.on('pointerover', () => {
             credit.setScale(0.5);
+            select.play();
         })
         credit.on('pointerout', () => {
             credit.setScale(0.4);

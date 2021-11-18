@@ -4,9 +4,9 @@ let mainbg, block, block2, block3,
     player,
     FruitGroup, fruit,
     monster, monster1, monsterGroup, monsterSpawn, monsterSpawns,
-    heartGroup, heart,manyheart = 5;
+    heartGroup, heart, manyheart = 5;
 let keyA, keyD, keyW, keyS, keyQ;
-let music, run, runSound;
+let music, run, runSound, playerSound, monsterPain;
 let home;
 
 class GameScene extends Phaser.Scene {
@@ -28,6 +28,8 @@ class GameScene extends Phaser.Scene {
         //--------------------------------------เสียง--------------------------------------//
         this.load.audio("song", "src/image/song/gamesong.wav");
         this.load.audio("run", "src/sound/run.mp3");
+        this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
+        this.load.audio("painSound", "src/sound/pain.mp3");
 
 
         this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", { frameWidth: 372, frameHeight: 293, });
@@ -43,6 +45,10 @@ class GameScene extends Phaser.Scene {
         //music
         music = this.sound.add("song").setVolume(0.2);
         music.play({ loop: true });
+
+        playerSound = this.sound.add("fruitSound").setVolume(0.1);
+
+        monsterPain = this.sound.add("painSound").setVolume(0.2);
 
         //runsound
         // runSound = this.sound.add("run").setVolume(0.25);
@@ -95,8 +101,8 @@ class GameScene extends Phaser.Scene {
         //heart
         heartGroup = this.physics.add.group();
 
-        for (let i = 0; i < manyheart ; i++) {
-            heart = this.physics.add.image(50 + i*80,670, "heart")
+        for (let i = 0; i < manyheart; i++) {
+            heart = this.physics.add.image(50 + i * 80, 670, "heart")
                 .setScale(0.1)
                 .setDepth(1000);
             heartGroup.add(heart);
@@ -209,34 +215,35 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(player, home);
         this.physics.add.collider(player, block2, (player, block2) => {
             this.scene.start("GameScene02");
+            music.stop();
         });
 
         //fruit vs block2
-        this.physics.add.overlap(block2,FruitGroup, (block2,fruit) => {
+        this.physics.add.overlap(block2, FruitGroup, (block2, fruit) => {
             fruit.destroy();
             manyheart--;
-                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
-                            if (manyheart < i + 1) {
-                                heartGroup.getChildren()[i].setVisible(false);
-                            } else {
-                                heartGroup.getChildren()[i].setVisible(true);
-                            }
-                        }
+            for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                if (manyheart < i + 1) {
+                    heartGroup.getChildren()[i].setVisible(false);
+                } else {
+                    heartGroup.getChildren()[i].setVisible(true);
+                }
+            }
         });
 
         //monster Vs home
         this.physics.add.overlap(home, monsterGroup, (home, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
             manyheart--;
-                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
-                            if (manyheart < i + 1) {
-                                heartGroup.getChildren()[i].setVisible(false);
-                            } else {
-                                heartGroup.getChildren()[i].setVisible(true);
-                            }
-                        }
+            for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                if (manyheart < i + 1) {
+                    heartGroup.getChildren()[i].setVisible(false);
+                } else {
+                    heartGroup.getChildren()[i].setVisible(true);
+                }
+            }
             monster.setVelocityX(0);
-            monster.setOffset(-2000,5000);
+            monster.setOffset(-2000, 5000);
             this.time.addEvent({
                 delay: 200,
                 callback: function () {
@@ -251,15 +258,15 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(player, monsterGroup, (player, monster) => {
             monster.anims.play("monsterSheapSkillanim", true);
             manyheart--;
-                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
-                            if (manyheart < i + 1) {
-                                heartGroup.getChildren()[i].setVisible(false);
-                            } else {
-                                heartGroup.getChildren()[i].setVisible(true);
-                            }
-                        }
+            for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                if (manyheart < i + 1) {
+                    heartGroup.getChildren()[i].setVisible(false);
+                } else {
+                    heartGroup.getChildren()[i].setVisible(true);
+                }
+            }
             monster.setVelocityX(0);
-            monster.setOffset(-2000,5000);
+            monster.setOffset(-2000, 5000);
             this.time.addEvent({
                 delay: 200,
                 callback: function () {
@@ -285,7 +292,8 @@ class GameScene extends Phaser.Scene {
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterSheapDieanim", true);
             monster.setVelocityX(0);
-            monster.setOffset(-2000,5000);
+            monster.setOffset(-2000, 5000);
+            monsterPain.play();
 
             fruit.destroy();
             this.time.addEvent({
@@ -303,7 +311,7 @@ class GameScene extends Phaser.Scene {
     update(delta, time) {
         mainbg.tilePositionX += 0;
         player.anims.play("playerrun", true);
-        if (manyheart == 0){
+        if (manyheart == 0) {
             this.scene.start('DeathScene')
             music.stop();
             // runSound.stop();
@@ -334,6 +342,7 @@ class GameScene extends Phaser.Scene {
 
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
+            playerSound.play();
             fruit = this.physics.add
                 .image(player.x + 50, player.y, "fruit")
                 .setScale(0.1);

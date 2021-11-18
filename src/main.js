@@ -7,6 +7,7 @@ import GameScene04 from './scenes/GameScene04';
 import DeathScene from './scenes/DeathScene';
 import WinScene from './scenes/WinScene';
 import MainMenu from './scenes/MainMenu';
+import tutorial from './scenes/tutorial';
 
 
 const config = {
@@ -20,7 +21,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true
+            debug: false
         }
     },
     scene: [
@@ -31,6 +32,7 @@ const config = {
         GameScene04,
         DeathScene,
         WinScene,
+        tutorial,
         
     ],
 
