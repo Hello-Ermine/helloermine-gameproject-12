@@ -1,10 +1,12 @@
 import Phaser from "phaser";
 
-let bgRun01, block, block2, player, enemy1, FruitGroup,
-    FruitEvent, fruit, monster, monsterGroup, monsterSpawn;
+let bgRun01, block, block2, block3, block4, block5,
+    player,
+    FruitGroup, FruitEvent, fruit, monster,
+    monsterGroup, monsterSpawn;
+let heartGroup, heart,manyheart = 5;
 let keyA, keyD, keyW, keyS, keyQ;
 let music;
-let home;
 
 class GameScene02 extends Phaser.Scene {
     constructor(test) {
@@ -19,15 +21,17 @@ class GameScene02 extends Phaser.Scene {
         this.load.image("home", "src/image/home.png");
         this.load.image("block", "src/image/block2.png");
         this.load.image("fruit", "src/image/ninja-fruit.png");
-        this.load.spritesheet("player", "src/image/ninja.png", {frameWidth: 227.7,frameHeight: 280});
-        this.load.audio("song", "src/image/song/gamesong.mp3");
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", {frameWidth: 178.75,frameHeight: 185});
+        this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
+
+        //--------------------------------------เสียง--------------------------------------//
+        this.load.audio("run", "src/sound/run.mp3");
+
+        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193, });
+        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
+        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193, });
     }
 
     create() {
-        //music
-        music = this.sound.add("song").setVolume(0.1);
-        music.play({ loop: true });
         //BackGround
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
             .setDepth(0)
@@ -44,8 +48,6 @@ class GameScene02 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
-<<<<<<< Updated upstream
-=======
         block3 = this.physics.add.image(-110, 20, "block")
             .setDepth(100)
             .setVisible(0)
@@ -58,7 +60,12 @@ class GameScene02 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
->>>>>>> Stashed changes
+        block5 = this.physics.add.image(-950, 20, "block")
+            .setDepth(100)
+            .setVisible(0)
+            .setImmovable()
+            .setSize(50, 720)
+            .setOffset(1250, 300);
 
         //Player
         player = this.physics.add.sprite(100, 450, "player")
@@ -76,43 +83,80 @@ class GameScene02 extends Phaser.Scene {
             framerate: 0,
             repeat: -1,
         });
+        //heart
+        heartGroup = this.physics.add.group();
+
+        for (let i = 0; i < manyheart ; i++) {
+            heart = this.physics.add.image(50 + i*80,670, "heart")
+                .setScale(0.1)
+                .setDepth(1000);
+            heartGroup.add(heart);
+        }
 
         //Enemy set
         this.anims.create({
             key: "monsterOrangeanim",
             frames: this.anims.generateFrameNumbers("monsterOrange", {
                 start: 0,
-                end: 3,
+                end: 4,
             }),
             duration: 500,
             framerate: 0,
             repeat: -1,
         });
 
+        this.anims.create({
+            key: "monsterOrangeDieanim",
+            frames: this.anims.generateFrameNumbers("monsterOrangeDie", {
+                start: 0,
+                end: 7,
+            }),
+            duration: 800,
+            framerate: 0,
+        });
+
+        this.anims.create({
+            key: "monsterOrangeAtkanim",
+            frames: this.anims.generateFrameNumbers("monsterOrangeAtk", {
+                start: 0,
+                end: 3,
+            }),
+            duration: 400,
+            framerate: 0,
+            loop: true,
+            pause: false,
+        });
+
+        this.anims.create({
+            key: "monsterOrangeAtkanim2",
+            frames: this.anims.generateFrameNumbers("monsterOrangeAtk", {
+                start: 0,
+                end: 3,
+            }),
+            duration: 400,
+            framerate: 0,
+            loop: true,
+            pause: false,
+        });
+
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 3000,
+            delay: 700,
             callback: function () {
-<<<<<<< Updated upstream
-                monster = this.physics.add
-                    .sprite(Phaser.Math.Between(900, 1100),
-=======
-                monster = this.physics.add.sprite(Phaser.Math.Between(1000, 1280),
->>>>>>> Stashed changes
-                        Phaser.Math.Between(400, 600), 'monsterOrange')
+                monster = this.physics.add.sprite(Phaser.Math.Between(1300, 1280), Phaser.Math.Between(250, 680), "monsterOrange")
                     .setDepth(8)
                     .setScale(0.7)
                     .setSize(100, 160)
                     .setOffset(50, 10);
-                monsterGroup.add(monster)
-                    .setVelocityX(-600);
+                monsterGroup.add(monster).setVelocityX(-500);
                 monster.anims.play("monsterOrangeanim", true);
                 monster.flipX = true;
             },
             callbackScope: this,
-            loop: true,
-            pause: false
+            loop: false,
+            repeat: 25,
+            pause: false,
         });
 
         //Fruit set
@@ -129,52 +173,121 @@ class GameScene02 extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, block2, (player, block2) => {
-            music.stop();
-            this.scene.start('GameScene03')
+            this.scene.start("GameScene03");
         });
-        this.physics.add.collider(player, home);
-        this.physics.add.collider(player, enemy1);
+        //fruit vs block2
+        this.physics.add.overlap(block2,FruitGroup, (block2,fruit) => {
+            fruit.destroy();
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+        });
+        
+        this.physics.add.collider(block5, monsterGroup, (block5, monster) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
+            monster.destroy();
+        });
+
         //Vs monster
         this.physics.add.collider(player, monsterGroup, (player, monster) => {
+            manyheart--;
+                        for (let i = heartGroup.getChildren().length - 1; i >= 0; i--) {
+                            if (manyheart < i + 1) {
+                                heartGroup.getChildren()[i].setVisible(false);
+                            } else {
+                                heartGroup.getChildren()[i].setVisible(true);
+                            }
+                        }
             monster.destroy();
         });
-        this.physics.add.collider(FruitGroup, monsterGroup, (fruit, monster) => {
+
+        this.physics.add.overlap(
+            monsterGroup,
+            block3,
+            (monsterGroup, block3) => {
+                monster.anims.play("monsterOrangeAtkanim", true);
+                monster.setVelocityX(-900);
+            }
+        );
+
+        this.physics.add.overlap(
+            monsterGroup,
+            block4,
+            (monsterGroup, block4) => {
+                monster.anims.play("monsterOrangeanim", true);
+                // monster.setVelocityX(-600);
+            }
+        );
+
+        this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
+            monster.anims.play("monsterOrangeDieanim", true);
+            monster.setVelocityX(0);
+            monster.setOffset(-2000,5000);
             fruit.destroy();
-            monster.destroy();
+            this.time.addEvent({
+                delay: 600,
+                callback: function () {
+                    monster.destroy();
+                },
+                callbackScope: this,
+                loop: false,
+            });
         });
-
-
-
-
     }
 
     update(delta, time) {
-        bgRun01.tilePositionX += 2;
+        bgRun01.tilePositionX += 3;
         player.anims.play("playerrun", true);
+        if (manyheart == 0){
+            this.scene.start('DeathScene')
+        }
 
         //Key WS STOP
-        if (keyS.isDown) {player.setVelocityY(300);} 
-        else if (keyW.isDown) {player.setVelocityY(-300);}
-        else {player.setVelocityY(0);}
+        if (keyS.isDown) {
+            player.setVelocityY(500);
+        } else if (keyW.isDown) {
+            player.setVelocityY(-500);
+        } else {
+            player.setVelocityY(0);
+        }
         //Key AD STOP
-<<<<<<< Updated upstream
-        if (keyA.isDown) {player.setVelocityX(-300);}
-        else if (keyD.isDown) {player.setVelocityX(300);}
-        else {player.setVelocityX(0);}
-        
-=======
-        if (keyA.isDown) { player.setVelocityX(-300); }
-        else if (keyD.isDown) { player.setVelocityX(1000); }
-        else { player.setVelocityX(0); }
+        if (keyA.isDown) {
+            player.setVelocityX(-300);
+        } else if (keyD.isDown) {
+            player.setVelocityX(1000);
+        } else {
+            player.setVelocityX(0);
+        }
 
->>>>>>> Stashed changes
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
-            fruit = this.physics.add.image(player.x, player.y, 'fruit')
-                .setScale(0.1)
+            fruit = this.physics.add
+                .image(player.x, player.y, "fruit")
+                .setScale(0.1);
             // fruit.rotation += 1;
-            FruitGroup.add(fruit)
-            FruitGroup.setVelocityX(800)
+            FruitGroup.add(fruit);
+            FruitGroup.setVelocityX(800);
+        }
+
+        for (var i = 0; i < FruitGroup.getChildren().length; i++) {
+            var fruits = FruitGroup.getChildren()[i];
+            fruits.rotation += 0.2;
+
+            if (fruits.x > 1280) {
+                fruits.destroy();
+            }
         }
     }
 }
