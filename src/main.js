@@ -8,6 +8,7 @@ import DeathScene from './scenes/DeathScene';
 import WinScene from './scenes/WinScene';
 import MainMenu from './scenes/MainMenu';
 import tutorial from './scenes/tutorial';
+import credit from './scenes/credit';
 
 
 const config = {
@@ -21,19 +22,19 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     scene: [
         MainMenu,
+        tutorial,
+        credit,
         GameScene,
         GameScene02,
         GameScene03,
         GameScene04,
         DeathScene,
         WinScene,
-        tutorial,
-        
     ],
 
 

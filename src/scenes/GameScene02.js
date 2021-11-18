@@ -271,17 +271,17 @@ class GameScene02 extends Phaser.Scene {
 
         //Key WS STOP
         if (keyS.isDown) {
-            player.setVelocityY(500);
+            player.setVelocityY(400);
         } else if (keyW.isDown) {
-            player.setVelocityY(-500);
+            player.setVelocityY(-400);
         } else {
             player.setVelocityY(0);
         }
         //Key AD STOP
         if (keyA.isDown) {
-            player.setVelocityX(-300);
+            player.setVelocityX(-600);
         } else if (keyD.isDown) {
-            player.setVelocityX(1000);
+            player.setVelocityX(400);
         } else {
             player.setVelocityX(0);
         }

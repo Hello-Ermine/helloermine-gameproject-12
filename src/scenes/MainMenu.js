@@ -56,7 +56,6 @@ class MainMenu extends Phaser.Scene {
         tutorial.setInteractive();
         tutorial.on('pointerup', () => {
             this.scene.start('tutorial');
-            menutheme.stop();
         })
         tutorial.on('pointerover', () => {
             tutorial.setScale(0.5);
@@ -70,7 +69,7 @@ class MainMenu extends Phaser.Scene {
         credit = this.add.image(240, 550, 'credit').setScale(0.4);
         credit.setInteractive();
         credit.on('pointerup', () => {
-            this.scene.start('GameScene');
+            this.scene.start('credit');
             menutheme.stop();
         })
         credit.on('pointerover', () => {

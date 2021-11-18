@@ -372,27 +372,27 @@ class GameScene04 extends Phaser.Scene {
         }
 
         //Key WS STOP
-        if (keyS.isDown) { player.setVelocityY(700); }
-        else if (keyW.isDown) { player.setVelocityY(-700); }
+        if (keyS.isDown) { player.setVelocityY(600); }
+        else if (keyW.isDown) { player.setVelocityY(-600); }
         else { player.setVelocityY(0); }
         //Key AD STOP
-        if (keyA.isDown) { player.setVelocityX(-400); }
-        else if (keyD.isDown) { player.setVelocityX(300); }
+        if (keyA.isDown) { player.setVelocityX(-600); }
+        else if (keyD.isDown) { player.setVelocityX(400); }
         else { player.setVelocityX(0); }
 
         //KeyQ
         if (Phaser.Input.Keyboard.JustDown(keyQ)) {
             playerSound.play();
             fruit = this.physics.add.image(player.x, player.y, 'fruit')
-                .setScale(0.1)
+                .setScale(0.12)
             FruitGroup.add(fruit)
-            FruitGroup.setVelocityX(1200)
+            FruitGroup.setVelocityX(2000)
         }
 
         //--------------------------------------Rotate fruits--------------------------------------//
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {
             var fruits = FruitGroup.getChildren()[i];
-            fruits.rotation += 0.05;
+            fruits.rotation += 1;
 
             if (fruits.x > 1280) {
                 fruits.destroy();

@@ -186,10 +186,8 @@ class GameScene extends Phaser.Scene {
             callback: function () {
                 monster = this.physics.add.sprite(Phaser.Math.Between(1200, 1280), Phaser.Math.Between(300, 700), "monsterSheap")
                     .setDepth(8)
-                    .setScale(0.4)
-                    .setSize(100, 160)
-                    .setOffset(50, 10);
-                monsterGroup.add(monster).setVelocityX(-300);
+                    .setScale(0.4);
+                monsterGroup.add(monster).setVelocityX(-500);
                 monster.anims.play("monsterSheapanim", true);
                 monster.flipX = false;
             },
@@ -279,7 +277,7 @@ class GameScene extends Phaser.Scene {
 
         this.physics.add.overlap(monsterGroup, block3, (monsterGroup, block3) => {
             monster.anims.play("monsterSheapAtkanim", true);
-            monster.setVelocityX(-700);
+            monster.setVelocityX(-500);
         }
         );
 
@@ -319,10 +317,10 @@ class GameScene extends Phaser.Scene {
 
         //Key WS STOP
         if (keyS.isDown) {
-            player.setVelocityY(500);
+            player.setVelocityY(400);
 
         } else if (keyW.isDown) {
-            player.setVelocityY(-500);
+            player.setVelocityY(-400);
 
         } else {
             player.setVelocityY(0);
@@ -330,10 +328,10 @@ class GameScene extends Phaser.Scene {
         }
         //Key AD STOP
         if (keyA.isDown) {
-            player.setVelocityX(-300);
+            player.setVelocityX(-600);
 
         } else if (keyD.isDown) {
-            player.setVelocityX(1000);
+            player.setVelocityX(400);
 
         } else {
             player.setVelocityX(0);
@@ -347,13 +345,12 @@ class GameScene extends Phaser.Scene {
                 .image(player.x + 50, player.y, "fruit")
                 .setScale(0.1);
             FruitGroup.add(fruit);
-            FruitGroup.setVelocityX(600);
-            fruit.rotation += 0.04;
+            FruitGroup.setVelocityX(500);
         }
 
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {
             var fruits = FruitGroup.getChildren()[i];
-            fruits.rotation += 0.2;
+            fruits.rotation += 0.8;
 
             if (fruits.x > 1280) {
                 fruits.destroy();
