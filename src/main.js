@@ -8,7 +8,7 @@ import DeathScene from './scenes/DeathScene';
 import WinScene from './scenes/WinScene';
 import MainMenu from './scenes/MainMenu';
 import tutorial from './scenes/tutorial';
-import credit from './scenes/credit';
+import credit from './scenes/Credit';
 
 
 const config = {
