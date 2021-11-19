@@ -28,33 +28,23 @@ class GameScene04 extends Phaser.Scene {
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
 
-        //--------------------------------------เสียง--------------------------------------//
+        //--------------------------------------sound--------------------------------------//
         this.load.audio("run", "src/image/song/run.aiff");
         this.load.audio("bosssong", "src/image/song/bossTheme.mp3");
         this.load.audio("BossHaha", "src/sound/hahaha.mp3");
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
         this.load.audio("lazerSound", "src/sound/lazer2.mp3");
 
-        //--------------------------------------หิน--------------------------------------//
-        this.load.image("rock", "src/image/หิน1.png");
-        this.load.image("rock2", "src/image/หิน2.png");
+        //--------------------------------------rock-------------------------------------//
+        this.load.image("rock", "src/image/rock01.png");
+        this.load.image("rock2", "src/image/rock02.png");
 
-        //--------------------------------------มอนส้ม--------------------------------------//
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 178.75, frameHeight: 185 });
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201 });
-        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193 });
-
-        //--------------------------------------มอนชมพู--------------------------------------//
-        this.load.spritesheet("monsterPink", "src/image/ชมพูเดิน.png", { frameWidth: 300, frameHeight: 165 });
-        this.load.spritesheet("monsterPinkDie", "src/image/ชมพูตุย.png", { frameWidth: 214, frameHeight: 206 });
-        this.load.spritesheet("monsterPinkAtk", "src/image/ชมพูตี.png", { frameWidth: 300, frameHeight: 165 });
-
-        //--------------------------------------มอนม่วง--------------------------------------//
-        this.load.spritesheet("monsterPurple", "src/image/ม่วงยืน.png", { frameWidth: 122, frameHeight: 130 });
-        this.load.spritesheet("monsterPurpleDie", "src/image/ม่วงตุย.png", { frameWidth: 122, frameHeight: 130 });
-        this.load.spritesheet("monsterPurpleAtk", "src/image/ม่วงตี.png", { frameWidth: 122, frameHeight: 130 });
-        this.load.spritesheet("monsterPurpleHurt", "src/image/ม่วงเจ็บ.png", { frameWidth: 122, frameHeight: 130 });
-        this.load.spritesheet("monsterPurpleSkill", "src/image/พลังม่วง.png", { frameWidth: 87, frameHeight: 54 });
+        //--------------------------------------purple-------------------------------------//
+        this.load.spritesheet("monsterPurple", "src/image/Purple.png", { frameWidth: 122, frameHeight: 130 });
+        this.load.spritesheet("monsterPurpleDie", "src/image/PurpleDie.png", { frameWidth: 122, frameHeight: 130 });
+        this.load.spritesheet("monsterPurpleAtk", "src/image/PurpleAtk.png", { frameWidth: 122, frameHeight: 130 });
+        this.load.spritesheet("monsterPurpleHurt", "src/image/PurpleHurt.png", { frameWidth: 122, frameHeight: 130 });
+        this.load.spritesheet("monsterPurpleSkill", "src/image/PurpleSkill.png", { frameWidth: 87, frameHeight: 54 });
     }
 
     create() {
@@ -121,7 +111,7 @@ class GameScene04 extends Phaser.Scene {
             heartGroup.add(heart);
         }
 
-        //--------------------------------------Spawn หิน1--------------------------------------//
+        //--------------------------------------Spawn rock01--------------------------------------//
         rockGroup = this.physics.add.group();
 
         rockSpawn = this.time.addEvent({
@@ -141,7 +131,7 @@ class GameScene04 extends Phaser.Scene {
             pause: false,
         })
 
-        //--------------------------------------Spawn หิน2--------------------------------------//
+        //--------------------------------------Spawn rock02--------------------------------------//
         rock2Group = this.physics.add.group();
 
         rock2Spawn = this.time.addEvent({
@@ -161,7 +151,7 @@ class GameScene04 extends Phaser.Scene {
             pause: false,
         })
 
-        //--------------------------------------create animation มอนม่วง--------------------------------------//
+        //--------------------------------------create animation Purple--------------------------------------//
         this.anims.create({
             key: "monsterPurpleanim",
             frames: this.anims.generateFrameNumbers("monsterPurple", {
@@ -204,7 +194,7 @@ class GameScene04 extends Phaser.Scene {
             // pause: false,
         });
 
-        //--------------------------------------Spawn มอนม่วง--------------------------------------//
+        //--------------------------------------Spawn Purple--------------------------------------//
         monster3Group = this.physics.add.group();
 
         monster3Spawn = this.time.addEvent({
@@ -235,7 +225,7 @@ class GameScene04 extends Phaser.Scene {
             monheartGroup.add(monheart);
         }
 
-        //--------------------------------------Spawn bullet มอนม่วง--------------------------------------//
+        //--------------------------------------Spawn bullet Purple--------------------------------------//
         Bulletmonster3Group = this.physics.add.group();
 
         Bulletmonster3Spawn = this.time.addEvent({
@@ -318,7 +308,7 @@ class GameScene04 extends Phaser.Scene {
             Bulletmonster3.destroy();
         });
 
-        //--------------------------------------fruit Vs มอนม่วง(เจ็บ)--------------------------------------//
+        //--------------------------------------fruit Vs Purple--------------------------------------//
         this.physics.add.overlap(FruitGroup, monster3Group, (fruit, monster3) => {
             monster3.anims.play("monsterPurpleHurtanim", true);
             manymonheart--;
@@ -343,7 +333,7 @@ class GameScene04 extends Phaser.Scene {
             })
         });
 
-        //-------------------------------------ชนหินแล้วโดนบีบ--------------------------------------//
+        //-------------------------------------Rock Vs Player--------------------------------------//
         this.physics.add.collider(player, rockGroup, (player, rock) => {
             rock.setVelocityX(-600);
 

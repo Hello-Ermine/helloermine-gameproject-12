@@ -26,18 +26,18 @@ class GameScene extends Phaser.Scene {
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
 
-        //--------------------------------------เสียง--------------------------------------//
+        //--------------------------------------sound--------------------------------------//
         this.load.audio("song", "src/image/song/gamesong.wav");
         this.load.audio("run", "src/sound/run.mp3");
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
         this.load.audio("painSound", "src/sound/pain.mp3");
 
 
-        this.load.spritesheet("monsterSheap", "src/image/แกะเดิน.png", { frameWidth: 372, frameHeight: 293, });
-        this.load.spritesheet("monsterSheapDie", "src/image/แกะตุย.png", { frameWidth: 376, frameHeight: 293, });
-        this.load.spritesheet("monsterSheapSleep", "src/image/แกะตุย2.png", { frameWidth: 376, frameHeight: 293, });
-        this.load.spritesheet("monsterSheapAtk", "src/image/แกะตี2.png", { frameWidth: 500, frameHeight: 293, });
-        this.load.spritesheet("monsterSheapSkill", "src/image/พลังแกะ.png", { frameWidth: 405, frameHeight: 407, });
+        this.load.spritesheet("monsterSheap", "src/image/Sheap.png", { frameWidth: 372, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapDie", "src/image/SheapDie.png", { frameWidth: 376, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapSleep", "src/image/SheapSleep.png", { frameWidth: 376, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapAtk", "src/image/SheapAtk.png", { frameWidth: 500, frameHeight: 293, });
+        this.load.spritesheet("monsterSheapSkill", "src/image/SheapSkill.png", { frameWidth: 405, frameHeight: 407, });
 
 
     }

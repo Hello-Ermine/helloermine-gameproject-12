@@ -26,25 +26,25 @@ class GameScene03 extends Phaser.Scene {
         this.load.image("fruit", "src/image/ninja-fruit.png");
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280, });
 
-        //--------------------------------------เสียง--------------------------------------//
+        //--------------------------------------sound--------------------------------------//
         this.load.audio("run", "src/sound/run.mp3");
         this.load.audio("painSound", "src/sound/pain.mp3");
         this.load.audio("Bebosssong", "src/image/song/BeBoss.wav");
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
 
-        //--------------------------------------หิน--------------------------------------//
-        this.load.image("rock", "src/image/หิน1.png");
-        this.load.image("rock2", "src/image/หิน2.png");
+        //--------------------------------------rock--------------------------------------//
+        this.load.image("rock", "src/image/rock01.png");
+        this.load.image("rock2", "src/image/rock02.png");
 
-        //--------------------------------------มอนส้ม--------------------------------------//
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 178.75, frameHeight: 185, });
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
-        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193, });
+        //--------------------------------------Orange--------------------------------------//
+        this.load.spritesheet("monsterOrange", "src/image/Orange.png", { frameWidth: 178.75, frameHeight: 185, });
+        this.load.spritesheet("monsterOrangeDie", "src/image/OrangeDie.png", { frameWidth: 205, frameHeight: 201, });
+        this.load.spritesheet("monsterOrangeAtk", "src/image/OrangeAtk.png", { frameWidth: 179, frameHeight: 193, });
 
-        //--------------------------------------มอนชมพู--------------------------------------//
-        this.load.spritesheet("monsterPink", "src/image/ชมพูเดิน.png", { frameWidth: 300, frameHeight: 165, });
-        this.load.spritesheet("monsterPinkDie", "src/image/ชมพูตุย.png", { frameWidth: 214, frameHeight: 206, });
-        this.load.spritesheet("monsterPinkAtk", "src/image/ชมพูตี.png", { frameWidth: 300, frameHeight: 165, });
+        //--------------------------------------Pink--------------------------------------//
+        this.load.spritesheet("monsterPink", "src/image/Pink.png", { frameWidth: 300, frameHeight: 165, });
+        this.load.spritesheet("monsterPinkDie", "src/image/PinkDie.png", { frameWidth: 214, frameHeight: 206, });
+        this.load.spritesheet("monsterPinkAtk", "src/image/PinkAtk.png", { frameWidth: 300, frameHeight: 165, });
     }
 
     create() {
@@ -137,7 +137,7 @@ class GameScene03 extends Phaser.Scene {
             heartGroup.add(heart);
         }
 
-        //--------------------------------------create animation มอนส้ม--------------------------------------//
+        //--------------------------------------create animation Orange--------------------------------------//
         this.anims.create({
             key: "monsterOrangeanim",
             frames: this.anims.generateFrameNumbers("monsterOrange", {
@@ -171,7 +171,7 @@ class GameScene03 extends Phaser.Scene {
             pause: false,
         });
 
-        //--------------------------------------Spawn หิน1--------------------------------------//
+        //--------------------------------------Spawn rock01--------------------------------------//
         rockGroup = this.physics.add.group();
 
         rockSpawn = this.time.addEvent({
@@ -190,7 +190,7 @@ class GameScene03 extends Phaser.Scene {
             pause: false,
         })
 
-        //--------------------------------------Spawn หิน2--------------------------------------//
+        //--------------------------------------Spawn rock02--------------------------------------//
         rock2Group = this.physics.add.group();
 
         rock2Spawn = this.time.addEvent({
@@ -210,7 +210,7 @@ class GameScene03 extends Phaser.Scene {
         })
 
 
-        //--------------------------------------Spawn มอนส้ม--------------------------------------//
+        //--------------------------------------Spawn Orange--------------------------------------//
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
@@ -231,7 +231,7 @@ class GameScene03 extends Phaser.Scene {
             pause: false,
         });
 
-        //--------------------------------------create animation มอนชมพู--------------------------------------//
+        //--------------------------------------create animation Pink--------------------------------------//
         this.anims.create({
             key: "monsterPinkanim",
             frames: this.anims.generateFrameNumbers("monsterPink", {
@@ -263,7 +263,7 @@ class GameScene03 extends Phaser.Scene {
             framerate: 0,
         });
 
-        //--------------------------------------Spawn มอนชมพู--------------------------------------//
+        //--------------------------------------Spawn Pink--------------------------------------//
         monster2Group = this.physics.add.group();
 
         monster2Spawn = this.time.addEvent({
@@ -336,7 +336,7 @@ class GameScene03 extends Phaser.Scene {
             monster2.destroy();
         });
 
-        //------------------------------ตัวส้มโจมตี------------------------------//
+        //------------------------------Orange ATK------------------------------//
         this.physics.add.overlap(
             monsterGroup,
             block3,
@@ -355,7 +355,7 @@ class GameScene03 extends Phaser.Scene {
             }
         );
 
-        //--------------------------------------fruit Vs มอนส้ม(ตาย)--------------------------------------//
+        //--------------------------------------fruit Vs OrangeDie--------------------------------------//
         this.physics.add.overlap(FruitGroup, monsterGroup, (fruit, monster) => {
             monster.anims.play("monsterOrangeDieanim", true);
             monster.setVelocityX(0);
@@ -373,7 +373,7 @@ class GameScene03 extends Phaser.Scene {
             });
         });
 
-        //------------------------------ตัวชมพูโจมตี------------------------------//
+        //------------------------------Pink ATK------------------------------//
         this.physics.add.overlap(
             monster2Group,
             block3,
@@ -416,7 +416,7 @@ class GameScene03 extends Phaser.Scene {
             monster2.destroy();
         });
 
-        //--------------------------------------fruit Vs มอนชมพู(ตาย)--------------------------------------//
+        //--------------------------------------fruit Vs PinkDie--------------------------------------//
         this.physics.add.overlap(
             FruitGroup,
             monster2Group,
@@ -438,7 +438,7 @@ class GameScene03 extends Phaser.Scene {
             }
         );
 
-        //-------------------------------------ชนหินแล้วโดนบีบ--------------------------------------//
+        //-------------------------------------Rock Vs Player--------------------------------------//
         this.physics.add.collider(player, rockGroup, (player, rock) => {
             rock.setVelocityX(-600);
 

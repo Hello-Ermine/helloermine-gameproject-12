@@ -31,9 +31,9 @@ class GameScene02 extends Phaser.Scene {
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
 
 
-        this.load.spritesheet("monsterOrange", "src/image/ส้มเดิน.png", { frameWidth: 179, frameHeight: 193, });
-        this.load.spritesheet("monsterOrangeDie", "src/image/ส้มตุย2.png", { frameWidth: 205, frameHeight: 201, });
-        this.load.spritesheet("monsterOrangeAtk", "src/image/ส้มตี.png", { frameWidth: 179, frameHeight: 193, });
+        this.load.spritesheet("monsterOrange", "src/image/Orange.png", { frameWidth: 179, frameHeight: 193, });
+        this.load.spritesheet("monsterOrangeDie", "src/image/OrangeDie.png", { frameWidth: 205, frameHeight: 201, });
+        this.load.spritesheet("monsterOrangeAtk", "src/image/OrangeAtk.png", { frameWidth: 179, frameHeight: 193, });
     }
 
     create() {
