@@ -37,12 +37,12 @@ class GameScene02 extends Phaser.Scene {
     }
 
     create() {
-        music = this.sound.add("song").setVolume(0.2);
+        music = this.sound.add("song").setVolume(0.3);
         music.play({ loop: true });
 
-        playerSound = this.sound.add("fruitSound").setVolume(0.1);
+        playerSound = this.sound.add("fruitSound").setVolume(0.2);
 
-        monsterPain = this.sound.add("painSound").setVolume(0.2);
+        monsterPain = this.sound.add("painSound").setVolume(0.3);
 
         //BackGround
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
@@ -291,9 +291,9 @@ class GameScene02 extends Phaser.Scene {
 
         //Key WS STOP
         if (keyS.isDown) {
-            player.setVelocityY(400);
+            player.setVelocityY(600);
         } else if (keyW.isDown) {
-            player.setVelocityY(-400);
+            player.setVelocityY(-600);
         } else {
             player.setVelocityY(0);
         }
@@ -301,7 +301,7 @@ class GameScene02 extends Phaser.Scene {
         if (keyA.isDown) {
             player.setVelocityX(-600);
         } else if (keyD.isDown) {
-            player.setVelocityX(400);
+            player.setVelocityX(600);
         } else {
             player.setVelocityX(0);
         }

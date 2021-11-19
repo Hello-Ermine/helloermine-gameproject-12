@@ -44,12 +44,12 @@ class GameScene extends Phaser.Scene {
 
     create() {
         //music
-        music = this.sound.add("song").setVolume(0.2);
+        music = this.sound.add("song").setVolume(0.3);
         music.play({ loop: true });
 
-        playerSound = this.sound.add("fruitSound").setVolume(0.1);
+        playerSound = this.sound.add("fruitSound").setVolume(0.2);
 
-        monsterPain = this.sound.add("painSound").setVolume(0.2);
+        monsterPain = this.sound.add("painSound").setVolume(0.3);
 
         //runsound
         // runSound = this.sound.add("run").setVolume(0.25);
@@ -338,10 +338,10 @@ class GameScene extends Phaser.Scene {
 
         //Key WS STOP
         if (keyS.isDown) {
-            player.setVelocityY(400);
+            player.setVelocityY(600);
 
         } else if (keyW.isDown) {
-            player.setVelocityY(-400);
+            player.setVelocityY(-600);
 
         } else {
             player.setVelocityY(0);
@@ -352,7 +352,7 @@ class GameScene extends Phaser.Scene {
             player.setVelocityX(-600);
 
         } else if (keyD.isDown) {
-            player.setVelocityX(400);
+            player.setVelocityX(600);
 
         } else {
             player.setVelocityX(0);
@@ -366,7 +366,7 @@ class GameScene extends Phaser.Scene {
                 .image(player.x + 50, player.y, "fruit")
                 .setScale(0.1);
             FruitGroup.add(fruit);
-            FruitGroup.setVelocityX(500);
+            FruitGroup.setVelocityX(800);
         }
 
         for (var i = 0; i < FruitGroup.getChildren().length; i++) {

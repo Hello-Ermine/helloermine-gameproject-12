@@ -25,7 +25,7 @@ class MainMenu extends Phaser.Scene {
     }
 
     create() {
-        menutheme = this.sound.add('menutheme').setVolume(1);
+        menutheme = this.sound.add('menutheme').setVolume(0.7);
         menutheme.play({loop: true});
 
         select = this.sound.add('selectMenu').setVolume(0.5);

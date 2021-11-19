@@ -48,11 +48,11 @@ class GameScene04 extends Phaser.Scene {
     }
 
     create() {
-        music = this.sound.add("bosssong").setVolume(1);
+        music = this.sound.add("bosssong").setVolume(0.7);
         music.play({ loop: true });
 
         monsterPain = this.sound.add("painSound").setVolume(0.5);
-        bossSound = this.sound.add("BossHaha").setVolume(1);
+        bossSound = this.sound.add("BossHaha").setVolume(0.7);
         bossSound.play();
 
         bossBullet = this.sound.add("lazerSound").setVolume(0.5);
@@ -237,7 +237,7 @@ class GameScene04 extends Phaser.Scene {
                     .setSize(0, 0)
                     .setOffset(0, 0);
                 Bulletmonster3Group.add(Bulletmonster3)
-                    .setVelocityX(-700);
+                    .setVelocityX(-800);
                 Bulletmonster3.anims.play("monsterPurpleSkillanim", true);
                 Bulletmonster3.flipX = true;
 
@@ -366,7 +366,7 @@ class GameScene04 extends Phaser.Scene {
         else { player.setVelocityY(0); }
         //Key AD STOP
         if (keyA.isDown) { player.setVelocityX(-600); }
-        else if (keyD.isDown) { player.setVelocityX(400); }
+        else if (keyD.isDown) { player.setVelocityX(600); }
         else { player.setVelocityX(0); }
 
         //KeyQ
