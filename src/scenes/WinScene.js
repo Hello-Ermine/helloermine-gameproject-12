@@ -22,7 +22,7 @@ class WinScene extends Phaser.Scene {
             .setScale(0.20);
 
         winSound = this.sound.add("winner")
-            .setVolume(0.4)
+            .setVolume(1)
             .play();
 
         select = this.sound.add('selectMenu')

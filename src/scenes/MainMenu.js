@@ -25,7 +25,7 @@ class MainMenu extends Phaser.Scene {
     }
 
     create() {
-        menutheme = this.sound.add('menutheme').setVolume(0.5);
+        menutheme = this.sound.add('menutheme').setVolume(1);
         menutheme.play({loop: true});
 
         select = this.sound.add('selectMenu').setVolume(0.5);
@@ -70,7 +70,6 @@ class MainMenu extends Phaser.Scene {
         credit.setInteractive();
         credit.on('pointerup', () => {
             this.scene.start('credit');
-            menutheme.stop();
         })
         credit.on('pointerover', () => {
             credit.setScale(0.5);

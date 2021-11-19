@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 let bgRun01, block, block2, block3, block4, block5,
+    block6,block6Spawns,block6Group,
     player,
     FruitGroup, FruitEvent, fruit,
     monster, monsterGroup, monsterSpawn,
@@ -28,7 +29,7 @@ class GameScene03 extends Phaser.Scene {
         //--------------------------------------เสียง--------------------------------------//
         this.load.audio("run", "src/sound/run.mp3");
         this.load.audio("painSound", "src/sound/pain.mp3");
-        this.load.audio("song", "src/image/song/gamesong.wav");
+        this.load.audio("Bebosssong", "src/image/song/BeBoss.wav");
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
 
         //--------------------------------------หิน--------------------------------------//
@@ -47,7 +48,7 @@ class GameScene03 extends Phaser.Scene {
     }
 
     create() {
-        music = this.sound.add("song").setVolume(0.2);
+        music = this.sound.add("Bebosssong").setVolume(0.2);
         music.play({ loop: true });
 
         playerSound = this.sound.add("fruitSound").setVolume(0.1);
@@ -90,6 +91,25 @@ class GameScene03 extends Phaser.Scene {
             .setImmovable()
             .setSize(50, 720)
             .setOffset(1250, 300);
+
+        //block can go
+        block6Group = this.physics.add.group();
+        block6Spawns = this.time.addEvent({
+            delay: 20000,
+            callback: function () {
+                block6 = this.physics.add.image(340, 20, "block")
+                    .setDepth(100)
+                    .setVisible(0)
+                    .setImmovable()
+                    .setSize(10, 720)
+                    .setOffset(1250, 300);
+                block6Group.add(block6);
+            },
+            callbackScope: this,
+            loop: false,
+            repeat: 1,
+            pause: false,
+        });
 
         //--------------------------------------player--------------------------------------//
         player = this.physics.add.sprite(100, 450, "player")
@@ -194,7 +214,7 @@ class GameScene03 extends Phaser.Scene {
         monsterGroup = this.physics.add.group();
 
         monsterSpawn = this.time.addEvent({
-            delay: 600,
+            delay: 1000,
             callback: function () {
                 monster = this.physics.add.sprite(Phaser.Math.Between(1300, 1400), Phaser.Math.Between(250, 680), "monsterOrange")
                     .setDepth(8)
@@ -247,7 +267,7 @@ class GameScene03 extends Phaser.Scene {
         monster2Group = this.physics.add.group();
 
         monster2Spawn = this.time.addEvent({
-            delay: 1200,
+            delay: 1600,
             callback: function () {
                 monster2 = this.physics.add.sprite(Phaser.Math.Between(1300, 1280), Phaser.Math.Between(250, 680), "monsterPink")
                     .setDepth(8)
@@ -260,7 +280,7 @@ class GameScene03 extends Phaser.Scene {
             },
             callbackScope: this,
             loop: false,
-            repeat: 20,
+            repeat: 15,
             pause: false,
         });
 
@@ -277,7 +297,7 @@ class GameScene03 extends Phaser.Scene {
         //--------------------------------------wallblock--------------------------------------//
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
-        this.physics.add.collider(player, block2, (player, block2) => {
+        this.physics.add.collider(player, block6Group, (player, block6) => {
             this.scene.start("GameScene04");
             music.stop();
         });

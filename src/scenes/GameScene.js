@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 let mainbg, block, block2, block3,
+    block4,block4Spawns,block4Group,
     player,
     FruitGroup, fruit,
     monster, monster1, monsterGroup, monsterSpawn, monsterSpawns,
@@ -81,6 +82,26 @@ class GameScene extends Phaser.Scene {
             .setImmovable()
             .setSize(10, 720)
             .setOffset(1250, 300);
+
+        //block can go
+        block4Group = this.physics.add.group();
+        block4Spawns = this.time.addEvent({
+            delay: 15000,
+            callback: function () {
+                block4 = this.physics.add.image(340, 20, "block")
+                    .setDepth(100)
+                    .setVisible(0)
+                    .setImmovable()
+                    .setSize(10, 720)
+                    .setOffset(1250, 300);
+                block4Group.add(block4);
+            },
+            callbackScope: this,
+            loop: false,
+            repeat: 1,
+            pause: false,
+        });
+
 
         //Player
         player = this.physics.add.sprite(400, 600, "player")
@@ -211,7 +232,7 @@ class GameScene extends Phaser.Scene {
         player.setCollideWorldBounds(true);
         this.physics.add.collider(player, block);
         this.physics.add.collider(player, home);
-        this.physics.add.collider(player, block2, (player, block2) => {
+        this.physics.add.collider(player, block4Group, (player, block4) => {
             this.scene.start("GameScene02");
             music.stop();
         });

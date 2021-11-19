@@ -29,9 +29,8 @@ class GameScene04 extends Phaser.Scene {
         this.load.spritesheet("player", "src/image/ninja.png", { frameWidth: 227.7, frameHeight: 280 });
 
         //--------------------------------------เสียง--------------------------------------//
-        this.load.audio("song", "src/image/song/gamesong.mp3");
         this.load.audio("run", "src/image/song/run.aiff");
-        this.load.audio("song", "src/image/song/gamesong.wav");
+        this.load.audio("bosssong", "src/image/song/bossTheme.mp3");
         this.load.audio("BossHaha", "src/sound/hahaha.mp3");
         this.load.audio("fruitSound", "src/sound/fruitSd.mp3");
         this.load.audio("lazerSound", "src/sound/lazer2.mp3");
@@ -59,16 +58,16 @@ class GameScene04 extends Phaser.Scene {
     }
 
     create() {
-        music = this.sound.add("song").setVolume(0.15);
+        music = this.sound.add("bosssong").setVolume(1);
         music.play({ loop: true });
 
-        monsterPain = this.sound.add("painSound").setVolume(1);
-        bossSound = this.sound.add("BossHaha").setVolume(0.2);
+        monsterPain = this.sound.add("painSound").setVolume(0.5);
+        bossSound = this.sound.add("BossHaha").setVolume(1);
         bossSound.play();
 
         bossBullet = this.sound.add("lazerSound").setVolume(0.5);
 
-        playerSound = this.sound.add("fruitSound").setVolume(0.1);
+        playerSound = this.sound.add("fruitSound").setVolume(0.2);
 
         //--------------------------------------BackGround--------------------------------------//
         bgRun01 = this.add.tileSprite(0, 0, 1280, 720, "bgRun01")
